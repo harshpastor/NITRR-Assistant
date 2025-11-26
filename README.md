@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 0aba5af (Update README.md)
 
 # 🎓 College Ordinance RAG Chatbot
 
@@ -214,4 +210,4 @@ Update the **Backend URL** field in the header if your backend URL differs.
 - ChromaDB persists under `backend/chroma/` by default.
 - The UI preserves all **variable names** and request/response shapes used earlier.
 - Confidence gating switches between **RAG** and **GENERIC** modes; tweak threshold in `/ask` as needed.
->>>>>>> 6fc4862 (all files)
+
