@@ -1,0 +1,1688 @@
+ORDINANCES AND REGULATIONS
+BACHELOR OF TECHNOLOGY (B.TECH.)
+NATIONAL INSTITUTE OF TECHNOLOGY RAIPUR
+
+Office of Dean Academics
+NIT Raipur
+CG, India, 492010
+
+i
+
+Extracted from
+“THE NATIONAL INSTITUTES OF TECHNOLOGY ACT, 2007,
+No. 29 of 2007, Dated 5th June, 2007”
+Section 27, Page 7
+
+Subject to the provisions of this Act and the Statutes, the Ordinances of every Institute may provide for all or
+anyof the following matters, namely:—
+(a) The admission of the students to the Institute;
+(b) The courses of study to be laid down for all degrees and diplomas of the Institute;
+(c) The conditions under which students shall be admitted to the degree or diploma courses and to the
+examinations of the Institute, and shall be eligible for degrees and diplomas;
+(d) The conditions of award of the fellowships, scholarships, exhibitions, medals and prizes;
+(e) The conditions and mode of appointment and duties of examining bodies, examiners and moderators;
+(f) The conduct of examinations;
+(g) The maintenance of discipline among the students of the Institute; and
+(h) Any other matter which by this Act or the Statutes is to be or may be provided for by the Ordinances.
+
+Ordinance: A local law, an edict or decree.
+Regulation: A law or administrative rule, issued by an organization, used to guide or prescribe the conduct of members of that organization.
+
+ii
+
+CONTENTS
+
+1
+
+2
+3
+4
+
+5.
+
+About the Institute
+A.
+Vision of the Institute
+B.
+Mission of the Institute
+Preamble
+Acronyms and Definitions
+Ordinance and Regulations
+A.
+Academic Programme
+B.
+Admission
+C.
+Academic Calendar
+D.
+Registration
+E.
+Structure of Programme
+F.
+Credit Requirements
+G.
+Grading System and Division
+H.
+Assessment Procedure
+I.
+Attendance Requirement and Absence
+J.
+Promotion
+K.
+Duration of Programme
+L.
+Eligibility for Award of the Degree
+M. Temporary Withdrawal
+N.
+Faculty Advisor
+O.
+Course Evaluation by the Students
+P.
+Credit Transfer and Online Courses
+Q.
+Permanent Withdrawal
+R.
+Change of Branch
+S.
+Rules to deal with academic malpractice
+T.
+Power to Modify
+Annexures
+I. Regulations for change of branch after second semester
+II. Constitution and functioning of DAC and DGC
+III. Program Structure
+IV. Regulations for unfair means
+
+iii
+
+1. About the Institute
+
+The National Institute of Technology Raipur (NIT Raipur) is a technical institution funded by the
+Government of India, located in Raipur, Chhattisgarh. Founded in 1956 as Govt. College of Mining &
+Metallurgy with two engineering disciplines, mining and metallurgy, the institute is one of the oldest
+of its kind in India. Currently it is one of the National Institutes of Technology, which have been
+accorded Institute of National Importance status by the National Institutes of Technology Act, 2007.
+National Institute of Technology, Raipur (NIT RR), upgraded from GEC Raipur in the year 2005, presently
+runs academic courses in 12 major disciplines in the form of graduate and post graduate courses. The
+Institute also inducts scholars for PhD courses. One of the biggest NIT, in the way of intake at UG level,
+has a legacy of more than 60 years of service to the nation.
+
+Vision of the Institute:
+To be a leader in technical and management education in India and to establish a unique
+identity for the development of high quality human and knowledge resource in diverse area
+of technology and management.
+
+Mission of the Institute:
+To Re-engineer the engineering education and to mould young students into rational
+thinking engineers who are motivated by a passion for professional excellence driven by
+human values and proactively engaged in betterment of society.
+
+iv
+
+2. Preamble
+2.1 The provisions in these regulations govern the conditions for imparting courses of instructions, conduction
+of examinations and evaluation of performance of students leading to B. Tech. degrees programs in
+National Institute of Technology Raipur (NITRR).
+2.2 This ordinance supersedes all the previous ordinances, rules and regulations and are effective from the
+academic year 2019-2020 onwards.
+2.3 The curriculum intends to provide broad based knowledge and simultaneously builds a temper for the
+lifelong process of learning and exploring. At undergraduate level, a student needs to do compulsory
+foundation courses in the areas of Humanities, Basic Sciences and social sciences apart from the
+departmental requirements. Departmental courses (core and electives) constitute minimum 50% of the
+total curriculum. Further, students are allowed open category electives to broaden inter-disciplinary
+knowledge base and to specialize in an area outside the parent discipline.
+2.4 The medium of instruction in the Institute is English.
+2.5 The Institute follows the semester system. An academic year runs from July through June next year and
+comprises of two semesters and two terms. The First semester (Autumn Semester) starts in the third week
+of July and ends in the middle of December, while, the second semester (Spring Semester) starts in first
+week of January and ends in the middle of May. This is followed immediately by the Summer Term starts
+which ends in the second week of July. The Winter Term starts around the third week of December.
+2.6 The provisions of these regulations shall also be applicable to any new discipline that will be introduced
+from time to time and added to the list of Academic Programme.
+2.7 Notwithstanding all that has been stated in the Regulations, Senate has the right to review and change the
+Regulations from time to time.
+2.8 Any doubt or dispute arising about the interpretation of the Regulations shall be referred to the
+Chairperson Senate whose decision shall be the final decision.
+
+v
+
+3. Acronyms
+S.No
+
+Acronym
+
+Full Form
+
+1
+
+AI
+
+All India
+
+2
+
+B. Tech
+
+Bachelor of Technology
+
+3
+
+CCB
+
+Central Counseling Board
+
+4
+
+CFTIs
+
+Centrally Funded Technical Institutes
+
+5
+
+CGPA
+
+Cumulative Grade Point Average
+
+6
+
+CPI
+
+Cumulative Performance Index
+
+7
+
+DAC
+
+Departmental Academic Committee
+
+8
+
+DGC
+
+Departmental Grievance Committee
+
+9
+
+EPR
+
+Essential Program Requirements
+
+10
+
+ESE
+
+End Semester Exam
+
+11
+
+FIR
+
+First Information Report
+
+12
+
+GoI
+
+Government of India
+
+13
+
+HOD
+
+Head of the Department
+
+14
+
+IISc
+
+Indian Institute of Science
+
+15
+
+IIT
+
+Indian Institute of Technology
+
+16
+
+JEE
+
+Joint Entrance Examination
+
+17
+
+L
+
+Lecture
+
+18
+
+MHRD
+
+Ministry of Human Resource Development
+
+19
+
+MIS
+
+Management Information System
+
+20
+
+MOOCs
+
+Massive Open Online Courses
+
+21
+
+MSE
+
+Mid Semester Exam
+
+22
+
+NCC
+
+National Cadet Corps
+
+23
+
+NIT
+
+National Institute of Technology
+
+24
+
+NSS
+
+National Service Scheme
+
+25
+
+OE
+
+Open Elective
+
+26
+
+P
+
+Practical
+
+27
+
+PC
+
+Programme Core
+
+28
+
+PrC
+
+Project Committee
+
+29
+
+PE
+
+Programme Elective
+
+30
+
+PG
+
+Post Graduation
+
+31
+
+PLR
+
+Programme Laboratory Requirements
+
+32
+
+SPI
+
+Semester Performance Index
+
+33
+
+T
+
+Tutorial
+
+34
+
+TA
+
+Teacher’s Assessment
+
+35
+
+UFM
+
+Unfair Means
+
+36
+
+UG
+
+Under Graduation
+
+37
+
+UMC
+
+Unfair Means Cases
+
+vi
+
+vii
+
+4. Ordinance and Regulations
+(B. Tech. Programs)
+4. A.
+
+Academic Programme
+4. A.1. The B. Tech. Academic Programme comprises of the following disciplines in which the degrees are be
+offered:
+I.
+II.
+III.
+IV.
+V.
+VI.
+VII.
+VIII.
+IX.
+X.
+XI.
+
+4.B.
+
+Bio Medical Engineering
+Bio Technology
+Chemical Engineering
+Civil Engineering
+Computer Engineering
+Electrical Engineering
+Electronics and Communication Engineering
+Information Technology
+Mechanical Engineering
+Metallurgical Engineering
+Mining Engineering
+
+Admission
+4. B.1. The minimum qualification for admission to the first semester of B.Tech. Course shall normally be
+the passing of a Higher Secondary School Certificate exam (10+2) scheme with Physics, Chemistry
+and Mathematics conducted by recognized Board of Secondary Education or an equivalent exam of
+a recognized Board/University as per the instructions received from Ministry of Human Resource
+Development (MHRD), GoI from time to time.
+4. B.2. Admission of Indian Nationals to the first semester of B.Tech. Course shall be through his relative
+performance in Joint Entrance Examination (JEE) leading to securing a place in merit list of eligible
+candidates and as governed by the rules of Central Counseling Board (CCB) time to time.
+4. B.3. Direct admission of Foreign Nationals either residing in India or abroad or Indian nationals residing
+abroad to the first semester of B.Tech. Course shall be according to the policy guidelines laid down
+by the MHRD, Govt. of India/Board of Governors (BoG) of the Institute from time to time.
+4. B.4. Students admitted to the B. Tech. Programmes shall normally pursue the Programme initially
+allocated to them at the time of admission. However, the Senate may permit a limited number of
+academically meritorious students as assessed by their performance in the Institute for first two
+regular semesters, to change their Programme. Any such change of Programme shall be as per the
+"Change of Branch Rules (Branch Sliding)" as given in the Annexure -1 of this document.
+4. B.5. Every student, admitted provisionally or otherwise to the UG Programme of the Institute, shall
+submit copies of the qualifying degree/provisional certificate and such other documents within the
+stipulated date as prescribed by the Senate failing which may lead to cancellation of the admission
+of the student by the Senate.
+4. B.6. If, any time after admission, it is found that a candidate had not in fact fulfilled all the requirements
+stipulated in the offer of admission, in any form what so ever, including possible misinformation etc.,
+the Dean-Academic shall report the matter to the Senate recommending for cancelling the
+admission of the candidate. The decision of the Senate, regarding the above, is final and binding.
+
+4. B.7. The institute reserves the right to cancel the admission of any student and ask him/her to
+discontinue his/her studies at any stage of his/her career on the grounds of indiscipline or any
+misconduct. The decision of the Senate, regarding the above, is final and binding.
+4. B.8. Candidates must fulfil the medical standards required for admission as prescribed by MHRD (GoI)
+from time to time.
+
+4. C.
+
+Academic Calendar
+4. C.1. The Academic Session shall commence in the month of July each year. Each Academic Session shall
+consist of two regular semesters, Autumn (Odd) and Spring (Even) apart from vacations, and midsemester breaks, if any. Each regular semester shall normally consist of about eighteen (18) weeks
+including examination period.
+4. C.2. The exact dates for the important academic events scheduled during the Academic Session shall be
+specified in the Academic Calendar.
+4. C.3. The Academic Calendar, or any change therein during the session, shall require prior approval of the
+Senate/ Chairman, Senate.
+
+4. D.
+
+Registration
+4. D.1. Every student of B. Tech program is required to be present and register at the commencement of
+each semester on the date fixed and notified in the Academic calendar. Registration process will
+have three components.
+4. D.1.1. Physical presence of the student on the first day of semester.
+4. D.1.2. Payment of semester fees including any unpaid dues of past semesters, and
+4. D.1.3. Getting enrolled/registered in the courses approved by the Departmental Academic
+Committee (DAC) of the department. Constitution of DAC/DGC is given in Annexure – II.
+4. D.2. Percentage attendance for all students will be counted from the date of commencement of the
+semester, irrespective of his/her date of registration.
+However, for First year students in first semester, attendance will be counted from date of admission
+into the Institute or date of commencement of class work, whichever is later.
+4. D.3. A student who does not register on the day announced for the purpose may be permitted by Dean
+Academics in consideration of any compelling reasons for late registration within next one week on
+payment of additional late fee as prescribed by the Institute from time to time. Normally, no late
+registration beyond one week from the scheduled date of registration shall be allowed.
+4. D.4 After registration in each semester, each student should collect a registration sheet, which indicates
+the courses registered by him/her in that semester, signed by the faculty advisor/Head of the
+Department (HOD). The student should carry this registration sheet for all the examinations in that
+semester. This sheet shall serve the purpose of hall ticket for appearing for the examinations in that
+semester.
+4. D.5. Only those students will be permitted to register who have
+4. D.5.1. Cleared all the institute and hostel dues of the previous semesters,
+4. D.5.2. Paid all required fees of the current semester,
+9
+
+4. D.5.3. Not been debarred from registering for a specified period on disciplinary or any
+other ground
+4. D.5.4. Not been struck off from the rolls of the institute.
+4. D.6. Except in 1st semester the tuition fees etc. will be paid semester wise and not year wise.
+4. D.7. The classes of all semesters will start from the day following the registration or any other day as
+decided by the institute authorities/mentioned in the Academic Calendar.
+4. D.8. Students may register subject(s) (up to a maximum of 30 credits in a semester) with the concurrence
+of the Head of the Department under intimation to the concerned course instructors and the
+academic section provided this is done within the date mentioned in the academic calendar. An
+elective course will normally be offered only if there is a minimum registration of 20 students. To
+accommodate faster learning, students may be allowed to register for subjects of the higher
+semester up to four credits, the suitability and feasibility of the same should be approved by the
+DAC. For registering courses of higher semester, the student should posses a CPI of 8 or higher,
+without any backlog.
+4. D.9. If a student finds his/her load heavy in any semester, or for any other valid reason, he/she can drop
+some courses within three weeks from the commencement of the class work in the semester with
+the written approval of his/her Faculty Advisor and Head of the Department, with an intimation to
+Dean-Academic. In such circumstances, the student shall not be eligible for the award of Distinction
+even if she/he secures a CPI of 8.5 and satisfies the other requisite criterion as per rule 4.H.8. Elective
+courses may normally be changed within a week from the commencement of classes.
+4. D.10. Backlog subjects means subjects from the previous semesters with ‘F ‘grade. A student can appear
+for supplementary examination in the backlog subject/s as and when it is conducted. In case a
+student fails in the supplementary examination too then he/she has to register for a backlog subject
+whenever it is offered. His/her previous marks/grades will be cancelled and she/he will have to
+attend all classes and examinations as and when they are conducted. Major changes in the time
+table shall not be entertained to accommodate backlog students.
+4. D.11. A student must register for the backlog courses first giving priority to the oldest backlogs. [The
+students will register by default for backlog courses being offered in a particular semester]. The
+maximum credits (including backlog courses) that a student can register in a semester is 30.
+However, students whose branch has been changed (as per Annexure I) in third semesters, can
+register for four more credits over the ceiling of 30 in third and forth semesters, only for passing the
+branch specific subject as per the requirement of the new branch.
+
+4. E.
+
+Structure of Programme
+4. E.1. The normal duration of the course leading to B. Tech. degree will be eight semesters or four years.
+Medium of instruction and examination will be English.
+4. E.2. Teaching scheme of a subject, in general, has Lecture (L) with one credit per period per week,
+Tutorial (T) and Laboratory/ Drawing/Workshop (P) components with half credit per period per
+week. However, some of these components may not be present in some subjects.
+4. E.3
+
+Any change in syllabi (up to one unit of the existing) proposed by the course coordinator has to be
+approved by the Departmental Academic Committee (DAC). Proposing changes in the syllabi for
+more than a unit would be termed as Revision of syllabi. Such revisions and changes in courses and
+curricula proposed by the course coordinator and recommended by DAC shall have to be placed
+before the Senate for its approval.
+10
+
+4. E.4. The structure of B.Tech. Programmes shall have Essential Program Requirements (EPR), Programme
+Core (PC), Elective Courses (PE and OE) and Programme Laboratory Requirements (PLR) as shown in
+Annexure –III.
+4. E.5.
+
+The curriculum of individual programmes includes industrial training for 4-6 weeks. Industrial
+training and/or fieldwork is to be satisfactorily completed before a student is declared eligible for
+the degree. The industrial training will be arranged during the summer vacation following the Fourth
+and sixth semester of studies. Attachment with an academic institution within the country (IISc/
+IITs/NITs/IIITs and CFTIs) or university abroad is also permitted instead of industrial training. A report
+is to be submitted to the Head of the Department and evaluation for one credit in Fifth Semester
+and two credits in Seventh Semester will be based on the report, presentation and viva-voce
+examination.
+
+4. E.6. A student may be allowed for a semester-long internship in industry/organization in Eighth Semester
+of the Programme provided the student has no backlog and he/she has received a pre-placement
+offer/offer of the internship from a reputed industry/organization. The student will be evaluated on
+the basis of a mid-semester evaluation, field evaluation report submitted by his/her supervisor
+belonging to the Industry/organization and report submitted by the student along with presentation
+and viva-voce in the department at the end of the semester. Attendance and the field evaluation
+report must be submitted with in the time frame to the Head of the Department. Such a student will
+have to successfully complete online courses/MOOCs approved by the DAC of the department as
+per the specified scheme (curriculum). Credits of such approved courses will be transferable for the
+calculation of SPI in the VIII Semester in the Institute.
+4. E.7. Project work is scheduled during the VIIth(seventh) Semester of regular session of the respective
+B.Tech. Programme. In order to promote interdisciplinary culture, a team of maximum four students
+from various departments can be formed with the permission of the Heads of Departments
+concerned in the second year itself. The project guide/s for such projects shall be from one or more
+departments. Co-guide from industry or Institutes of National Repute is also permitted.
+
+4. F.
+
+Credit Requirements
+4. F.1. Institute follows semester-based credit system of study. The prominent features of the credit system
+are a process of continuous evaluation of a student’s progress and flexibility to allow a student to
+progress at an optimum pace suited to his/her ability or convenience, subject to fulfilling minimum
+requirements for continuation. A student’s progress is measured by the number of credits he/she
+has earned, i.e. completed satisfactorily. Based on the course credits and grades obtained by the
+student, Performance Index is calculated. A minimum Performance Index is required to be
+maintained for satisfactory progress and continuation in the program. Also a minimum number of
+earned credits and a minimum Performance Index should be acquired in order to qualify for the
+degree. Minimum earned credit requirements for the 4-year B. Tech. programmes shall be 173.
+4. F.2. Basis of Credits will be {L+T+P/2} where L, T and P are number of Lecture, Tutorial and Practical
+periods respectively. Credit in a course will be a full number and if it falls to be a fractional one then
+that will be considered as next higher full number. A candidate can earn all the credits allotted to a
+semester only when he/she passes the said semester.
+4. F.3. The credits for the courses in which a student has ‘E’ (minimum passing grade for a course)or a
+higher grade will be counted as credits earned by him/her. Any course in which a student has
+obtained R, F or W grade will not be counted towards his/her earned credits.
+
+11
+
+4. G.
+
+Grading System
+4. G.1. A letter grade, corresponding to specified number of grade points, is awarded in each course for
+which a students is registered. Based on the sum total of marks obtained in TA, MSE and ESE, he/she
+will be awarded a letter grade based on his/her relative performance (w.r.t. other students) in the
+class of that course. The academic performance of a student shall be graded on a ten point scale. On
+obtaining a pass grade, the student accumulates the course credits as earned credits. A student’s
+performance is measured by the number of credits that he/she has earned and by the weighted
+Performance Index. A minimum number of credits should be acquired in order to qualify for a degree
+and continuation on semester basis.
+4. G.2. The awards/grades are submitted in the Dean Academic office positively within the prescribed time
+limit as announced in the academic calendar after the End Term examination.
+4. G.3. The grades to be awarded, corresponding grade points and the description of performance are listed
+below:
+Grade
+O
+A
+B
+C
+D
+E
+F
+NA
+W
+R
+
+Grade Points
+10
+9
+8
+7
+6
+5
+0
+----
+
+X
+
+--
+
+Performance
+Outstanding
+Excellent
+Very Good
+Good
+Fair
+Average
+Fail
+Not Appeared in ESE
+Withdrawal from the semester
+Insufficient Attendance (to be
+repeated)
+Debarred
+
+The norms for the award of the letter grade are as follows:
+I.
+II.
+III.
+IV.
+
+No student can be awarded E or better grade without securing at least 35% aggregate marks in
+any course, i.e. in (MSE+ESE+TA).
+For award of E or better Grade, it is also mandatory that the student should secure at least 35%
+marks of the maximum marks awarded/scored in the End Semester examination in the course.
+The class average is calculated by excluding the marks obtained by F grade students.
+Further, there shall be four transitional grading symbols, which can be used by the examiners to
+indicate the special position of a student in the subject.
+NA: for “Incomplete assessment” due to non-appearance in an exam, if the student misses the
+End-semester examination.
+R: for 'Insufficient attendance’ in the course (that course is to be repeated).
+W: for "Temporary withdrawal' from the Semester.
+X: for "Debarred" on grounds of malpractices in examinations or indisciplinary behavior, etc.
+
+4. G.4. An 'O' grade stands for outstanding achievement. The 'E' grade stands for average performance
+representing the minimum passing grade in any course.
+4. G.5. The 'F' grade denotes failing in a course. A student has to repeat the courses in which he/she obtains
+'F' grade, until a passing grade is obtained. 'F' grade may result in increased period of stay for
+completing degree requirements. No SPI will be awarded if a student has obtained one or more
+grade ‘F’ in a particular semester.
+12
+
+4. G.6. The student who remains absent (due to compelling reasons as mentioned in the clause 4.H.1-(iv))
+in the end semester examination will be awarded ‘NA’ grade. When a student gets ‘NA’ grade for
+any subject(s) during a semester, the SPI of that semester and the CPI at the end of that semester
+will become zero until that particular course/semester is not cleared by the student. Such student
+must appear in the supplementary examination to convert the ‘NA’ grade to any pass grade. If such
+a student remains absent in the supplementary examination too then he/she will be awarded ‘F’
+grade.
+4. G.7. A 'W' grade is awarded in a course where the student has opted to withdraw from the semester.
+Withdrawal from a course is permitted until the commencement of the mid-semester examination.
+4. G.8. The ‘R’ grade is awarded for insufficient attendance (as mentioned under section 4. I) and student
+has to repeat the course during the next year whenever it is offered or later as advised by the DAC.
+4. G.9. The performance of a student is evaluated in terms of two indices, viz. the Semester Performance
+Index (SPI) which is the Performance Index for a semester and Cumulative Performance Index (CPI)
+which is the Performance Index for all the completed semesters, at any point of time. The SPI is
+calculated on the basis of grades obtained in all courses registered for the semester. The CPI is
+calculated on the basis of all pass grades obtained in all completed semesters. Both SPI and CPI will
+be taken up to the second place of decimal without rounding off and recorded as such.
+SPI =
+
+CPI =
+
+∑ courses.(Course credit × Grade point)
+∑courses.(Course credit)
+
+∑All sem. completed(Course credit × Grade point) in passed courses
+∑All sem. completed(Course credit) in passed courses
+
+4. G.10. The CPI, SPI and the grades obtained in all the subjects in a semester will be communicated to every
+student at the end of every semester except in final year, second semester (i.e. VIIIth semester of B.
+Tech. courses) through a grade sheet. In its place a consolidated grade sheet will be issued for final
+semester. This consolidated grade sheet supersedes all the earlier grade sheets.
+
+4. H.
+
+Assessment Procedure
+4. H.1. (i) The teacher’s assessment would be carried out with Class tests, assignments, viva-voce, quizzes,
+laboratory assignments etc., being the constituent components of continuous assessment process,
+and a student must undergo the continuous assessment process as prescribed by the
+teacher/coordination committee of the subject. If due to any compelling reason (such as his/her
+illness, calamity in the family etc.) a student fails to meet any of the requirements within/on the
+scheduled date and time, the teacher/coordination committee in consultation with the concerned
+Head of the Department may take such steps (including the conduct of compensatory
+tests/examinations) as are deemed fit. In each semester, there shall be one mid semester exam
+(MSE), and one end semester exam (ESE) apart from surprise tests/quizzes/assignments. Students
+will be permitted to appear in the examinations in only those subjects for which they have registered
+at the beginning of the semester. The mid semester and supplementary examinations will be
+conducted by the Departments as per the schedule and guidelines provided by the Academic
+calendar. By the mid semester examination, minimum two units of the syllabus should be
+completed. End Semester examination is normally conducted centrally in the Institute.
+(ii) If a student fails to appear for the mid semester examination in any subject(s) due to compelling
+reason like serious illness of himself/herself which necessitates hospitalization/bed rest (with
+13
+
+intimation to the institute medical officer) or a calamity in the family, he/she shall apply immediately
+to the Head of the Department, along with relevant certificates within one week after completion
+of the examinations. All such cases will be scrutinized by DAC and approved list of candidates shall
+be permitted for a re-examination and the period of re-examination and syllabus shall be notified
+by the respective Head of the Department.
+(iii) Appearing in the end-semester examination in the theory and laboratory subjects is mandatory
+for a student. Unless exempted as stated below, if a student fails to appear for the end–semester
+examination, he/she shall be awarded ‘F’ grade in the subject. He/she can be permitted to appear
+for the Supplementary examinations to be conducted later, as announced in the academic calendar.
+In such cases, the student will be awarded only ‘E’ grade in-case the student gets more than 35 %
+marks in the Supplementary examination.
+(iv) However, if a student misses the end-semester examinations due to a compelling reason like
+serious illness of himself/herself which necessitates hospitalization or a calamity in the family,
+he/she may appeal to the Dean-Academic before commencement of examination through his/her
+Head of the Department and Institute Medical Officer for permitting himself/herself to appear in
+the subsequent examination(s), when conducted next. DAC of that department may, after
+examining the documents and being convinced about the merit of the case, recommend permitting
+him/her to appear in the subsequent supplementary examination(s). In such cases, transitory grade
+‘NA’ is temporarily awarded to the student in the subject.
+(v) Summer Semester during Summer vacation may be conducted for those students of final year
+only who have been awarded F or R grades in the immediate preceding seventh and /or eighth
+semester supplementary examination. Such students must not have any back-log up to third year at
+the time of registering in Summer Semester.
+4. H.2. The weightage assigned to various components of Teacher’s assessment (TA) shall be announced by
+the concerned class teachers in the beginning of the semester. Each student, registered for a course,
+shall be awarded marks by the concerned teacher/faculty in-charge. The marks awarded to a student
+depend upon his/her performance in various examinations, laboratory works/ assignment etc. The
+marks awarded are to be used to award the relative letter grades, and grade point.
+4. H.3. Assessment of Lecture Courses: The mid and end semester examinations are of 2 hours and 3 hours
+respectively. Review of question papers shall be done by the committee appointed at the
+departmental level. Result analysis shall be done at the Departmental Academic Committee (DAC)
+meeting and the same shall be reported to the Senate. The evaluation pattern for the theory courses
+shall be as under:
+Sub-component
+TA: Class tests/ Quizzes/ Assignment/Tutorials, etc.
+Mid semester exam
+End semester exam
+
+Weightage
+20 marks
+30 marks
+50 marks
+
+4. H.4. Assessment of Laboratory Courses: The continuous assessment in a laboratory course in each
+semester shall be for 100 marks, with the following weightages:
+Sub-component
+Weightage
+Continuous evaluation (TA)
+40 marks
+Mid-semester evaluation
+20 marks
+End Semester examination
+40 marks
+The marks for continuous evaluation may be distributed among various components like class work
+performance, Lab records, Quizzes, skill tests/assignments/mini projects and mid semester
+evaluation comprises of performance of the practical and viva-voce.
+14
+
+4. H.5. Project: Number of students assigned a project work should be restricted to a maximum of four.
+Head of each Department shall appoint a project coordinator who in consultation with the other
+faculty members will prepare a list of project topics to be given to the students at the beginning of
+7th semester. The project evaluation for the B. Tech. Programme shall be carried out by a Project
+committee (PrC) comprising, the Head of the Department or his/her nominee (Chairman), project
+coordinator and the project guide/s. The allocation of projects, faculty guides and tentative plan of
+work are to be done before the last day of class of the 6th semester. A mid-semester assessment
+and end-semester assessment will be carried out for each Part by the project coordinator and
+supervisor/s. The students are to be continuously assessed on their initiative, interest, effort and
+regularity shown during the project work and in the preparation of the project report. The project
+work shall be evaluated for 100 marks, with the following weightages:
+Sub-component
+Periodic evaluation by Guide (TA)
+Midterm review
+End Semester viva-voce examination
+
+Weightage
+40 marks
+20 marks
+40 marks
+
+If the performance of a student is not satisfactory, he/she can be awarded ‘F’ grade. Such a student
+will be given a maximum time of three months to improve his/her performance. If the performance
+of such a student is not satisfactory even after the extended time period, he/she will have to repeat
+the project work in the next academic year. The Departments have to evolve rubrics for evaluation
+of Project work. The marks may be distributed among various components like selection of topic,
+problem statement, literature review, methodology, oral and written presentation of the work done
+and performance in viva-voce examination. The final evaluation of the project work will be done at
+the end of second semester, final year. Any conduct on the part of students with regard to plagiarism
+(in project report or elsewhere) will be considered as indulgence in unethical means, and will invite
+strict disciplinary action.
+4. H.6. (i) The final grades awarded to the students in a subject must be submitted by the teacher/Chairman,
+Project committee to the concerned Head of the Department. The Head of the Department shall
+place the grades of students in all subjects before the DAC for its consideration and
+recommendation. The grades recommended by the DAC shall be sent to the Examination section.
+(ii) As a process of learning by students and also to ensure transparency, the answer scripts after
+correction of class tests, mid-semester examinations, assignments etc., will be shown to the
+students within the time-frame as mentioned in the Academic Calendar. The teacher/ Chairman,
+Coordination Committee must submit the marks obtained in mid semester examinations to the Head
+of the Department two weeks after the end of mid semester examinations. The marks obtained in
+class tests/ minor tests held till that date also need to be submitted to the Head of the Department.
+The performance of the students in these examinations will be discussed in the DAC.
+(iv) In order to ensure transparency in the evaluation of scripts of end-semester examination, those
+answer scripts also shall be shown to the students up to one day before the finalization of grades.
+Once the Grades are finalized by DAC, the student will no longer have any right to verify his/her
+answer scripts. The student can appeal to DGC for any arbitration within one week from the date of
+official publication of interim results in the Institute Website.
+4. H.7. A student of the B. Tech. degree program must complete the prescribed course work with a
+minimum requirement of 173 credits within a maximum period of seven years starting from
+registration of I year I Sem.
+4. H.8 (i) A student is considered eligible for the award of Honors if she/he
+15
+
+a) has passed minimum two extra theory subjects (approved by DAC) other than the stipulated
+ones. The extra theory subjects should comprise of minimum six and maximum eight credits
+over and above the minimum credit requirement of the concerned branch.
+b) has passed all the courses without securing R, X, F or W Grades during the period of study,
+c) has passed all the courses without dropping any courses in any semester and
+d) has passed securing a CPI of 8.5 and above.
+If a department offers one or more courses beyond the minimum credit requirement, the same
+shall not be considered for award of honours.
+(ii) A student is considered eligible for the award of First Division with Distinction if she/he has passed
+all the courses
+a) Without securing R, X, F or W Grades during the period of study,
+b) Without dropping any courses in any semester, and
+c) With a CPI of 8.5 and above.
+(iii) A student failing to satisfy Rule 4. H.8 (I and ii), even if he/she gets a CPI of 8.5 or more will not
+be eligible for the award of Distinction and will be awarded First Division only.
+(iv) A student with a CPI of 6.5 and above but less than 8.5 is considered eligible for the award of
+First Division.
+(v) A student with a CPI of 5.0 and above but less than 6.5 is considered eligible for the award of
+Second Division.
+4. H.9 The valued answer scripts shall be preserved for a maximum period of 12 (twelve) months after
+publication of results. The teachers are required to send the valued answer scripts of both mid
+semester and end semester examinations to the examination section to preserve them.
+
+4. I.
+
+Attendance Requirement and Absence
+4. I.1.
+
+Every student must attend all theory, tutorials and practical classes in the subjects in which she/he
+has registered at the beginning of the semester. However, to account for constraints/unavoidable
+circumstances, a condonation for the shortage of attendance up to 15 % can be granted by the DAC
+of the concerned department.
+A short fall in attendance up to a further 10% can be condoned by the Dean of Academic Affairs
+under satisfactory reasons. In truly exceptional circumstances, the Director may relax attendance
+requirements with reduction of grade, one or two steps lower, as it may be thought appropriate and
+recommended by a committee constituted for the purpose.
+
+4. I.2.
+
+Students not having minimum 75 %(including condonation) attendance in any course, shall not be
+permitted to appear for the end semester examination in that subject and is awarded “R” Grade in
+that course. Such student has to register for the course in which he/she has shortage of attendance,
+as and when the course is offered next.
+
+4. I.3
+
+If the period of absence is for a short duration (of not more than two weeks), application for leave
+shall have to be submitted to the Head of the Department concerned stating fully the reasons for
+the leave requested for along with supporting document(s). The Head of the Department will grant
+such leave. During such leave period, the student will be marked as absent. Even with this leave
+16
+
+applied, the student must satisfy at least 75 % attendance requirement to appear for end semester
+examination.
+
+4. J.
+
+4. I.4.
+
+A student must inform the Dean (Academics) through Head of the Department immediately of any
+instance of continuous absence from classes.
+
+4. I.5.
+
+The students will be informed of the status of attendance by the concerned course teacher at least
+twice in a semester. (to be listed under the duties of course coordinator/subject teacher).
+
+4. I.6.
+
+A student representing the Institute in approved extracurricular activities such as Sports, Games,
+Cultural meets, Seminar, Workshop, Conference and Interview arranged through Training &
+Placement Department, NCC/ NSS Camps etc., shall be considered as on-duty subject to a maximum
+of five days in a semester. Prior permission from competent authority is required for availing on
+duty permission. The period of absence can be counted as ‘present’ for the computation of
+percentage of attendance at the end of semester.
+
+Promotion
+4. J.1. There are no restrictions for promotion to next semester. However, as per clause 4.D.11, a student
+can register for maximum of 30 credits in a semester. In case of backlog, the student must register
+in the backlog papers first, giving priority to the oldest backlogs. A student will be permitted to
+register for maximum of seven theory subjects in any semester including backlog papers.
+4. J.2. Once a candidate has passed a semester examination, one shall NOT be permitted to reappear in
+that examination or part thereof with a purpose of improvement of performance in exam, such as,
+division, marks, grades etc.
+
+4. K.
+
+Duration of the Programme
+4. K.1. Normally a student has to complete all the requirements for B. Tech.Programmes in four years (eight
+semesters). Academically weak students who are unable to pass in some courses and have to repeat
+them in subsequent semesters or register for lesser number of courses in a semester on their own
+or as per the advice of the DAC, shall be permitted to complete all the requirements of the degree
+in maximum 14 consecutive semesters (seven years). The same holds equally for students who have
+requested and been granted temporary withdrawal.
+
+4. L.
+
+Eligibility for the Award of the Degree
+4. L.1. A candidate shall be eligible for the award of the degree of the Bachelor of Technology (B.Tech.) only
+if the candidate:
+i)
+ii)
+iii)
+iv)
+v)
+
+Has undergone the prescribed programme of study (by registering and crediting all core,
+professional and Open elective subjects),
+Has earned the minimum total number of credits specified in the curriculum of the relevant
+programme of study,
+Has obtained prescribed CPI of 5.0 or above within specified maximum permissible
+duration,
+Has no dues to the Institution, Library, Hostels, etc.,
+Has no disciplinary action pending against him/her.
+
+17
+
+4. M.
+
+Temporary Withdrawal from a semester
+4. M.1. A student who is unable to attend classes for more than four weeks (twenty teaching days) in a
+Semester, may apply to the Dean, Academics through Convener, DAC, for withdrawal from the
+Semester along with supporting documents, which shall mean withdrawal from all the registered
+courses in the Semester. Dean Academics shall put-up such cases with his recommendations to
+Chairman Senate for approval, decision of the Director & Chairman Senate will be final. For
+Application for semester withdrawal must be made as early as possible and latest one week before
+the start of the End Semester Examination.
+4. M.2. Partial withdrawal from the semester shall not be allowed.
+4. M.3 Any application on medical grounds shall be accompanied with a medical certificate from the
+institute Medical Officer. A certificate from a registered medical practitioner containing the
+registration number may also be accepted in those cases where a student is normally residing off
+campus or becomes ill while away from the Institute.
+4. M.4. A student will be permitted for semester withdrawal only twice in the entire duration of his
+programme.
+4.M.5. Such a student will be awarded ‘W’ grade in all subjects in the semester in which temporary
+withdrawal is made. Such a student will have to pay semester admission and institute fee for the
+semester in which temporary withdrawal is made.
+
+4. N.
+
+Faculty Advisor
+4. N.1. To help the students in planning their courses of study and to render general advice regarding either
+the academic programme or any other activity, the Head of the Department concerned, will assign
+every year, a certain number of students from the first year to a faculty member who will be called
+Faculty Adviser. The set of students thus assigned will continue to be under the guidance of this
+Faculty Adviser till they complete the programme or replaced by the HOD.
+
+4. O.
+
+Course Evaluation by the students (Feedback)
+4. O.1 Every course run in a semester is evaluated on the basis of feedback received from the students
+registered in that course. During the last week of a semester, the students shall give their feedback
+on the courses studied by them during the semester. The feedback system shall be computerized
+and coordinated by the MIS personnel. The compiled feedback reports shall be forwarded by the
+MIS personnel to the concerned Head of the Department who will scrutinize the same and may take
+appropriate steps to enhance the quality of teaching of the courses. If the feedback belongs to a
+subject handled by the Head of the Department, then the same shall be scrutinized by the Dean
+(Academics). Results will be withheld for those students who have not submitted the feedback.
+
+4.P.
+
+Credit Transfer and Online (MOOC) courses
+4.P.1. Within the broad framework of these regulations, Dean Academics on the recommendation of the
+concerned DAC may permit students to earn part of the credit requirements in other institutes of
+repute and status in the country or abroad.
+
+18
+
+4.Q
+
+4.P.2
+
+Student can register for online (MOOC) courses against an elective (PE and/or OE) as per the
+approved Scheme of the programme based on the recommendation of DAC and approval of the
+Head of the Department. Credits will be earned only when such courses are of minimum 40 hours’
+duration and are evaluated by the agency offering the online course. Corresponding institute grades
+will be decided by the DAC. The Online (MOOC) courses must be from renowned sources and
+recognized by the respective DAC.
+
+4.P.3
+
+In case the an online course is not evaluated(no grading provided) or the grading provided cannot
+be mapped as per clause 4.G.3, the students will have to appear in examination conducted by the
+department for evaluation. The DAC will appoint a faculty to guide and evaluate such student.
+
+Permanent Withdrawal
+
+Once the admission for the year is closed, the following conditions govern for permanent withdrawal of
+admissions:
+4.Q.1
+
+4.Q.2
+4.Q.3
+
+4.R
+
+A student, who wants to leave the Institute for good, will be permitted to do so, only after clearing
+all the dues, if any. Also, all the fees and charges already paid by him/her will not be refunded on
+any account.
+Those students who have received any scholarship, stipend or other forms of assistance from the
+Institute shall repay all such amounts.
+The decision of the Director and Chairman, Senate regarding all aspects of withdrawal of a student
+shall be final and binding.
+
+Change of Branch
+A student admitted to a particular branch of the B. Tech. programmes will normally continue studying in that
+branch till completion of degree. However, the Institute may permit a student admitted as per guidelines of
+MHRD, Govt. of India, to change branch at the end of the first two semesters, provided vacancies exist in
+such branches. Rules for change of branch is given in Annexure-I.
+
+4.S
+
+Rules to Deal with Academic Malpractices and Misconduct
+4.S.1 Every student of the institute is expected to maintain highest level of integrity and honesty in academics
+befitting the student of an institute of national importance. Rules to deal with unfair means (UFM)
+adopted by a student is given in Annexure –IV.
+4.S.2 Any misconduct not related to academics or not covered under UFM rules, will be dealt by the institute
+and the corresponding punishment pertaining to academics will be binding on the student.
+
+4.T
+
+Power to Modify
+4.T.1 Not withstanding all that has been stated above, the senate of the institute, has the right to modify any
+or all the above rules and regulations from time to time.
+4.T.2 In emergency situations, the Director in capacity of the Chairman Senate, can exercise powers of the
+Senate and discharge the functions of the Senate. Such decisions must be reported to the Senate in its
+next meeting.
+-xXx-
+
+19
+
+20
+
+Annexure - I
+REGULATIONS FOR CHANGE OF BRANCH AFTER SECOND SEMESTER
+1. Student admitted to a particular branch of the B. Tech. course will normally continue studying in that branch
+till completion. However, in special cases the Institute may permit a student, admitted through JEE Main to
+change from one branch to another after the first two semesters. Such changes will be permitted, strictly in
+accordance with provisions laid down hereafter.
+2. Only those students will be eligible for consideration for change of branch after the second semester, who
+havea. Completed all the credits prescribed in the first two semesters.
+b. Obtained a CGPA/CPI of not less than 7.5 at the end of second semester in one single attempt
+only.
+3. Repeaters are not eligible to take part in this process.
+4. Depending on the vacancies Dean, Academic Affairs may issue a notification inviting application for change
+of branch from the intending eligible students.
+5. Change of branch shall be made strictly on the basis of inter se merit of the applicants. For this purpose CPI
+obtained in second semester by the applicant shall be considered. Ties will be resolved by the AI rank of the
+applicants in JEE Main.
+6. As prescribed in the scheme of studies of Ist & IInd Semester, if a student belonging (say) ‘X’ branch slides
+(say) to ‘Y’ branch, then he/she will have to register in all those branch-specific Basic Engineering subjects
+which were offered to his counter parts in ‘Y’ branch in their first year. This is necessary for a student whose
+branch has been changed to complete the requirement for branch ‘Y’. In doing so, a slided student can
+register for at the most two subjects (as per the requirement) offered in first year of branch ‘Y’ in the 3rd
+semester of his changed (slided) branch. In case, the students has to register for three additional subjects,
+he/she shall register for two subjects in third semester and shall register for the third subject in fourth
+semester compulsorily. For such cases, the maximum credit limit per semester for 3rd and 4th will be 34
+credits. For such subjects, the students have to secure E or higher grade, and the same won’t be considered
+for calculation of CPI, SPI or determining eligibility for B.Tech (Hons.) and B.Tech with distinction.
+7. The applicants may be allowed a change of branch, strictly in the order of merit, subject to the condition
+that the student strength in a particular branch from which transfer is made, does not fall below 60% of the
+sanctioned strength.
+8. If a student is denied change of branch due to above reason, no other student with lesser CPI should be
+permitted for change of Branch.
+9. All changes of branch made in accordance with the above rules will be effective from the third semester of
+the applicants concerned. No change of branch shall be permitted thereafter.
+10. All changes of branch will be final and binding on the applicants. No student will be permitted under any
+circumstances to refuse the change of branch offered.
+
+21
+
+CONSTITUTION & FUNCTIONING OF
+DEPARTMENTAL ACADEMIC COMMITTEE (DAC)
+
+Annexure - II
+
+CONSTITUTION
+Chairperson
+Convener
+Member
+
+- Ex officio Head of the department
+- Any faculty member of department nominated by Chairperson
+i) Three faculty members of the department preferably senior faculty of the
+department.
+ii) One faculty member from outside the department.
+
+Student Member
+
+- One student from pre final year with good academic record.
+
+External Member
+
+- One from other NIT/IIT/IISC/ISI/Reputed Institute and one from Field/Industry
+
+•
+•
+•
+•
+•
+•
+•
+
+Members from the department may be less than three, in case three faculty members are not available in
+the department.
+All the members of the committee will be nominated by the head of the department in consultation with
+the faculty members.
+Chairperson may invite any other faculty member in a particular meeting as a invitee member, if need rises.
+In a meeting, where matter is related to PG course, one senior faculty member of the concerned
+specialization should be called in the meeting as a invitee member.
+Two separate panels of external members should be prepared, one from academic institute & others from
+field/industries. Any one member from each of these panels may be called as per need.
+External members will only be called in case of introduction/removal/modification of the courses and
+development of the course.
+Students may not be allowed in a meeting of confidential nature.
+
+QUORUM
+Convener and Chairperson of DAC will make every efforts so that all members attend the meeting. However, to
+hold the meeting quorum will be 2/3rd of due members.
+FUNCTIONS
+
+1.
+
+To monitor the conduct of all courses of the department including PG courses (if any).
+
+2.
+
+To ensure & suggest suitable measures for academic excellence of the courses offered by the department.
+
+3.
+
+To develop the curriculum (syllabus, scheme) for the UG and PG courses offered by the department and
+recommend the same to the Senate. To propose modification in the existing ordinance, if necessary.
+
+4.
+
+To propose new courses or closer of existing courses.
+
+5.
+
+To recommend the semester result to Dean(Academic) for declaration.
+
+6.
+
+To take up any responsibility or function assigned by the senate.
+22
+
+7.
+
+Committee may recommend any academic matter for its inclusion in the senate meeting.
+
+8.
+
+To obtain feedback of the performance appraisal of the course instructor from the students in the prescribed
+format.
+
+TENURE OF THE COMMITTEE
+The tenure of members will be of two years.
+
+DUTIES/RESPONSIBILITIES OF THE CHAIRPERSON
+1.
+To nominate convener and all members of the committee and send the names to Dean (Academic).
+2.
+
+To ensure that the meeting of the committee is called regularly and recommendation of the committee are
+complied with after approval of competent authority.
+
+DUTIES/RESPONSIBILITIES OF THE CONVENER
+
+1.
+
+To call the meeting at least once in a calendar month and whenever necessity arises.
+
+2.
+
+To call the meeting immediately after the semester result is prepared for recommending it for declaration.
+
+3.
+
+To document the minutes of the meeting and communicate recommendations to Dean (Academic) through
+Chairperson.
+
+23
+
+CONSTITUTION & FUNCTIONING OF
+DEPARTMENTAL GRIEVANCE COMMITTEE (DGC)
+Applicable for all degree awarding departments
+CONSTITUTION
+Chairperson
+Convener
+Member
+
+•
+•
+•
+•
+
+- Ex officio Head of the department
+- Convener of DAC will be the convener of Grievance Committee
+i) Three faculty members of the department who are member of DAC from department.
+ii) One faculty member from outside the department, who is member of DAC.
+
+Members from the department may be less than three, in case three faculty members are not available in
+the department.
+All the members of the committee will be nominated by the head of the department in consultation with
+the faculty members.
+Chairperson may invite any other faculty member in a particular meeting as a invitee member, if need rises.
+In a meeting, where matter is related to PG course, one senior faculty member of the concerned
+specialization should be called in the meeting as a invitee member.
+
+QUORUM
+Convener and Chairperson of Grievances Committee will make every efforts so that all members attend the
+meeting. However, to hold the meeting quorum will be 2/3rd of due members.
+
+FUNCTIONS
+
+1.
+
+To receive issues and grievances/complaints in writing from the students regarding shortage of attendance,
+admission, detention, examination and other academic activities and make recommendation suitably.
+
+2.
+
+To receive grievances/complaints in writing from the students regarding anomaly in award of marks/grades
+due to bias, victimization erratic evaluation etc. and redress the complaints.
+
+3.
+
+To interact with the concerned course teacher/question paper setter and student separately in the case of
+complaints as mentioned in point no. 2 above. Finally suitable recommendation shall be
+
+TENURE OF THE COMMITTEE
+The tenure of members will be of two years.
+
+DUTIES/RESPONSIBILITIES OF THE CHAIRPERSON
+1.
+
+To nominate convener and all members of the committee and send the names to Dean (Academic).
+
+2.
+
+To ensure that the meeting of the committee is called regularly and recommendation of the committee are
+complied with after approval of competent authority.
+24
+
+DUTIES/RESPONSIBILITIES OF THE CONVENER
+
+1.
+
+To call the meeting whenever necessity arises.
+
+2.
+
+To document the minutes of the meeting and communicate recommendations to Dean (Academic) through
+Chairperson.
+-xXx-
+
+25
+
+Annexure - III
+
+Program Structure
+The structure of B.Tech. Programmes shall have Essential Program Requirements (EPR), Programme
+Core (PC), Elective Courses (PE and OE) and Programme Laboratory Requirements (PLR) as
+follows:
+Essential Program Requirements:
+
+S. No.
+1.
+2.
+3.
+4.
+5.
+6.
+7.
+8.
+9.
+10.
+11.
+12.
+
+Course Name
+Mathematics
+Physics*
+Chemistry*
+Professional Ethics/Value
+Education
+Communication Skills
+Ecology and Environment*
+Engineering Practice#
+Basic Engineering*#
+Computer Courses*
+Training/Internship
+Project work
+Extra Academic Activity
+Total
+
+No. of Courses
+4
+2
+1
+1
+
+Max. Credits
+16
+8
+4
+1
+
+1
+1
+1
+3
+1
+2
+1
+2
+15
+(Excluding S. No. 10, 11
+and 12)
+
+4
+4
+2
+12
+4
+3
+4
+1
+63
+
+* Including Lab
+# Branch Specific
+Programme Core Requirements (PCR):
+Number of Core courses: 17 (Minimum)
+Number of credits: 68
+Elective Course Requirements:
+Number of Programme electives (PE): 6 (Minimum)
+Number of Credits for Programme Electives: 18
+Number of Open electives (OE): 5 (Minimum)
+Number of Credits for Open Electives: 15
+Programme Laboratory Requirements (PLR):
+Number of Programme Laboratories: 9 (Minimum)
+Number of Credits: 9
+The above distribution of the EPR, PCR, PE, OE and PLR can be modified with the approval of
+the Senate.
+
+- 25 -
+
+Annexure -IV
+
+PROCESS AND REGULATIONS FOR UNFAIR MEANS CASES
+
+Standard operating procedure for dealing with cases of unfair means:-
+
+A candidate found guilty of any of the following offences shall be deemed to have used unfair
+means and his/her examination result shall be withheld. The UFM Committee appointed by the
+Institute shall after giving a personal hearing recommend the penalty, if any, to be imposed on the
+candidate. If the candidate fails to turn up before the committee for personal hearing, the committee
+shall be entitled to decide the case on basis of record and recommend penalty, if any, to be imposed
+without giving any further opportunity of hearing.
+Formation of UFM Committee:
+There will be four members in UFM committee including chairperson. Chairperson and
+Members will be recommended by the Prof (I/c) Examinations and Dean Academics and approved by
+the Director. Term for the chairperson and member will be for two years. Director may change or
+increase the term of any member of the committee.
+
+(a)
+
+Procedure for booking of cases of use of Unfair Means at the examination centre:
+
+1.
+
+Issuance of Second Answer Sheet. As soon as any case of unfair means comes to the notice
+of the Superintendent/ Invigilator of the examination center he/she shall take possession of
+the Answer Sheet of the candidate along with paper or other material found in his/her
+possession and provide the candidate with a second Answer Sheet immediately. On the top of
+the Answer Sheet it should be super scribed “Second Answer Sheet”. The Superintendent shall
+record on the first Answer Sheet the time when the case was brought to his/her notice. He/She
+shall also record the time on the second Answer Sheet when it was issued to the candidate.
+
+2.
+
+Explanation of the Candidate.
+While issuing the second Answer Sheet the candidate
+shall be asked by the Centre Superintendent to submit his/her explanation in writing. In case
+the candidate refuses to give his/her statement, he/she should not be forced to do so, only
+the fact of his/her refusal should be recorded by the Invigilator/s on duty at the time of
+occurrence and such a statement of the Invigilator/s be attested by the Centre
+Superintendent.
+
+3.
+
+Statement of the Invigilator. The Invigilator, who detects the use of UFM by a candidate, shall
+also record his/her statement which shall be verified and signed by the Centre
+Superintendent. The statement of invigilator should clearly indicate the details of incident.
+
+4.
+
+Material found from the candidate. As far as possible precise information as to from where
+the material was found (in the pocket, desk, shoes etc.) should be mentioned in the statement
+of the Invigilator/s. The copying material so detected by an Invigilator should also be signed
+
+- 26 -
+
+by the Invigilator and countersigned by the Centre Superintendent on each page and the total
+number of pages detected should be mentioned on the title of the Answer Sheet duly signed
+by the Invigilator and Centre Superintendent.
+5.
+
+Procedure to be followed in case of smuggling out an Answer Sheet.
+In
+case
+a
+candidate has smuggled out an answer Sheet, the Centre Superintendent should call for the
+candidate directly and try to secure the Answer Sheet. In case of non-availability of the Answer
+Sheet, the matter should be reported to the police and a copy of the FIR be sent to the office
+of Controller of Examination along with the statement of the Invigilator present in the room
+and also of the candidate. The statement of the peon/police constable etc., if any, should also
+be forwarded.
+
+6.
+
+Other Cases of Unfair Means
+a) Impersonation.
+In case of impersonation, the Centre Superintendent should send to
+the Controller of Examination, the statement of the person found to be impersonating, the
+Invigilator/s and the real candidate, if possible. He/She may also report the matter to the
+police and shall arrange for taking photographs of the impersonator from 3 angles (front
+and two sides, left and right) and send along with the case.
+
+b) Misconduct.
+In case of misconduct by a student, the punishment / penalty will
+become serious. In case of misconduct of a serious nature, the matter should be reported
+to the police, if necessary. Statement of the Invigilator/s and that of the peon/policeman
+concerned may be obtained and sent to the office of the Controller of Examination.
+
+7.
+
+8.
+
+Documents Required to be Sent in UFM Cases.
+All cases of UFM should be recorded in the
+prescribed form for reporting UFM cases as given in Annexure - A. The form shall be
+accompanied by the following documents:a)
+
+First and/or second Answer Sheets
+
+b)
+
+Explanation of the candidate
+
+c)
+
+Statement of the Invigilator
+
+d)
+
+Incriminating material found from the student
+
+Submission of Unfair means cases. A separate sealed cover should be sent to the office of
+Controller of Examination along with the prescribed Performa in each case booked daily under
+UFM with a covering Performa generated by MIS.
+
+- 27 -
+
+List of penalties for different types of cases under UFM.
+
+Category of
+offence
+
+Offence(s)
+
+Penalty
+
+A
+
+Recovered material not related to the subject or
+found writing something on the question paper,
+
+Issue of warning not to repeat
+the same
+
+B
+
+Relevant material written by the candidate on any
+part of body, wall, door of the room, table/ desk,
+other devices used by the candidate.
+
+Award of F grade in the
+concerned paper of current
+examination.
+
+OR
+
+If the current examination
+happens
+to
+be
+the
+supplementary exam then F
+grade will imply R grade.
+
+Recovered matter related to the subject found on
+person of the candidate whether used or not used
+for writing answer(s)
+OR
+The candidate is copying from copy of other
+candidate and/or helping others to copy
+OR
+Carrying electronic gadgets in the examination
+hall which are not explicitly allowed
+OR
+Candidate is caught with a material which he/she
+has chewed or swallowed or torn into pieces and
+the candidate refuses to sign the documents
+OR
+Replacement of Answer Sheet, exchange of Answer
+Sheet with other student, addition of extra pages
+in the Answer Sheet, smuggling of Answer
+Sheet/pages,
+C
+
+Manhandling with staff on duty or creating
+disturbance in the examination hall/center.
+
+Award of F grade in all the
+subjects in the current
+examination. If the current
+examination happens to be
+the supplementary exam then
+F grade will imply R grade.
+
+D
+
+Carrying the answer
+examination hall.
+
+Award of R grade in all the
+subjects in the current
+examination and debarring
+for immediate next semester
+from academic activities. The
+period for which the student
+
+sheet
+
+OR
+
+- 28 -
+
+away
+
+from
+
+the
+
+Impersonation
+
+is
+debarred,
+would
+be
+considered for calculating the
+maximum stipulated time
+(seven years) for completing
+the program.
+
+E
+
+Two times indulgence in UFM as per category B, C
+and D above.
+
+Award of R grade in all the
+subjects in the current
+examination and debarring
+for immediate next semester
+from academic activities. The
+period for which the student
+is
+debarred,
+would
+be
+considered for calculating the
+maximum stipulated time
+(seven years) for completing
+the program.
+
+F
+
+More than two times indulgence in UFM as per
+category B,C and D above.
+
+Award of R grade in all the
+subjects in the current
+examination and debarring
+from the Institute for a period
+of one and a half years. The
+period for which the student
+is
+debarred,
+would
+be
+considered for calculating the
+maximum stipulated time
+(seven years) for completing
+the program.
+
+Aggrieved by the decision of the Standing Committee on Unfair Means Cases, a candidate may
+make a representation addressed to the Director along with the prescribed fee of Rs. 5000/- for
+reconsideration of his/her case. The Director may refer the matter to the Appellate Committee to be
+constituted for the purpose for reconsideration. The decision of the Appellate Committee once
+approved by the Director shall be final and binding on the candidate.
+
+IMPORTANT NOTES:
+
+I.
+
+The fact that a particular roll no. was booked as UMC should be recorded daily in the
+attendance sheet as well as in the statement for dispatch of Answer Sheet to the Controller of
+Examination through MIS.
+
+II.
+
+Candidates found using any of the UFM are not to be debarred from appearing in the
+remaining papers.
+
+III.
+
+Candidates can be physically searched by the Centre Superintendent / Invigilators /Member
+of the team of Observers deputed by Examination Division before or during the examination
+at any time except that a female candidate should be searched by a female member only.
+
+- 29 -
+
+IV.
+
+Normally when a candidate goes out to toilet the invigilators must ensure that the Answer
+Sheet and Question Paper of the candidate has been left behind on his/her seat in the
+examination hall.
+
+V.
+
+At the end of the examination no candidate should be allowed to leave the room till all the
+scripts are collected, counted and found correct. If a candidate forces his/her way out with
+the answer script, the complete statement explaining the circumstances under which the
+candidate has left with the script should be made out. In no case this provision should be
+used to cover up the loss of Answer Sheet. The statement should also contain the time of the
+incident and details of the case as to how the candidate took away the Answer Sheet as also
+efforts made to recover the Answer Sheet.
+-xXx-
+
+- 30 -
+
+
