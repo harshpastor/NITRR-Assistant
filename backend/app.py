@@ -3,6 +3,7 @@ import os
 import time
 import uuid
 import glob
+
 from typing import List, Dict, Any
 from datetime import datetime
 
@@ -17,7 +18,8 @@ import chromadb
 from chromadb.config import Settings
 
 # PDF parsing
-from pypdf import PdfReader
+# from pypdf import PdfReader
+import pymupdf4llm
 
 # Google Generative AI SDK
 import google.generativeai as genai
@@ -79,7 +81,7 @@ def embed_texts(texts: List[str], task_type="retrieval_document") -> List[List[f
             pass 
     return embeddings
 
-def simple_chunks(text: str, max_chars: int = 1800, overlap: int = 200) -> List[str]:
+def simple_chunks(text: str, max_chars: int = 1200, overlap: int = 200) -> List[str]:
     text = text.replace("\r\n", "\n")
     paras = [p.strip() for p in text.split("\n\n") if p.strip()]
     chunks = []
@@ -118,62 +120,30 @@ def file_already_ingested(col, filename: str) -> bool:
     existing = col.get(where={"title": filename}, include=["metadatas"])
     return len(existing['ids']) > 0
 
-def process_and_ingest(text, filename, program, effective_from=None, source_url=None):
-    """Helper to chunk, embed, and upsert text."""
+def process_and_ingest(text, title, program, effective_from=None, source_url=None, filename_on_disk=None):
+    # ... (date/url defaults logic remains same) ...
+    if not effective_from: effective_from = datetime.now().strftime('%Y-%m-%d')
+    if not source_url: source_url = "empty"
     
-    # Debugging: Print incoming values
-    print(f"Filename: {filename}, Program: {program}, Effective From: {effective_from}, Source URL: {source_url}")
-
-    # Default to current date for effective_from if not provided
-    if not effective_from:
-        effective_from = datetime.now().strftime('%Y-%m-%d')  # Current date in YYYY-MM-DD format
-
-    # Default to "empty" for source_url if not provided
-    if not source_url:
-        source_url = "empty"
-
-    # Ensure program and filename are valid
-    if not filename:
-        filename = "Untitled"
-    if not program:
-        program = "Unknown"
-
-    # Split text into chunks
     chunks = simple_chunks(text, max_chars=1900, overlap=220)
-    
-    # Embed the chunks
     embeddings = embed_texts(chunks, task_type="retrieval_document")
-    
-    if len(embeddings) != len(chunks):
-        raise ValueError("Embedding count mismatch (API error?)")
-
-    # Get or create the collection in Chroma
     col = get_collection(program)
-    
-    # Generate unique ids for each chunk
     ids = [str(uuid.uuid4()) for _ in chunks]
     
-    # Clean up old version if exists
-    col.delete(where={"title": filename}) 
-    
-    # Create the metadata for each chunk
-    # FIX: "section" is now "" instead of None, because ChromaDB crashes on None
+    # Check if title exists to avoid duplicates (optional, based on your preference)
+    # col.delete(where={"title": title}) 
+
     metadatas = [{
-        "title": filename,               
-        "section": "",                   # <--- FIXED: Changed None to ""
-        "program": program,              
-        "effective_from": effective_from, 
-        "source_url": source_url,         
+        "title": title,
+        "filename": filename_on_disk or "unknown.pdf", # <--- NEW FIELD
+        "section": "",
+        "program": program,
+        "effective_from": effective_from,
+        "source_url": source_url,
     } for _ in chunks]
-    
-    # Debugging: Print the metadata to check the values
-    print(f"Metadata (First Chunk): {metadatas[0]}")
 
-    # Upsert the chunks into the Chroma collection
     col.upsert(ids=ids, documents=chunks, embeddings=embeddings, metadatas=metadatas)
-    
     return len(chunks)
-
 
 # ... (imports remain the same)
 
@@ -189,7 +159,8 @@ def gemini_chat_answer(question: str, context_chunks: List[Dict[str, Any]], hist
         "2. If the user answers a previous clarification (e.g., they just say 'Total'), combine it with the chat history "
         "to understand they mean 'Total semesters in the program'.\n"
         "3. Always cite the source title if you find the answer.\n"
-        "4. If the answer is not in the context, say 'I cannot find that information in the documents.'"
+        "4. If the answer is not in the context, say 'Sorry, I am able find that information, Kindly contact the college administration.'"
+        "5. Be concise and clear with your answers. Make the answer more structured and pointwise wherever possible\n"
     )
     
     # Format Context
@@ -233,6 +204,10 @@ def gemini_chat_answer(question: str, context_chunks: List[Dict[str, Any]], hist
 # ... (Rest of code remains)
 
 # ------------- Endpoints ----------------
+@app.route("/documents/<path:filename>", methods=["GET"])
+def get_document(filename):
+    """Serve the PDF file to the user."""
+    return send_from_directory(DOCS_DIR, filename)
 
 @app.route("/health", methods=["GET"])
 def health():
@@ -283,7 +258,8 @@ def ingest_local():
     results = []
 
     for path in pdf_files:
-        filename = os.path.basename(path)
+        filename_on_disk = os.path.basename(path)
+        filename = filename_on_disk
         
         # Check if already exists
         if file_already_ingested(col, filename):
@@ -291,16 +267,23 @@ def ingest_local():
             continue
 
         try:
-            reader = PdfReader(path)
-            full_text = []
-            for page in reader.pages:
-                full_text.append(page.extract_text() or "")
-            text = "\n\n".join(full_text).strip()
+            text = pymupdf4llm.to_markdown(path)
             
-            chunk_count = process_and_ingest(text, filename, program)
-            results.append(f"Ingested {filename} ({chunk_count} chunks)")
+            chunk_count = process_and_ingest(text, filename, program, filename_on_disk=filename)
+            # full_text = []
+            # for page in reader.pages:
+            #     full_text.append(page.extract_text() or "")
+            # text = "\n\n".join(full_text).strip()
+            
+            chunk_count = process_and_ingest(
+                text, 
+                filename, 
+                program, 
+                filename_on_disk=filename_on_disk # <--- PASSING FILENAME
+            )
+            results.append(f"Ingested {filename_on_disk} ({chunk_count} chunks)")
         except Exception as e:
-            results.append(f"Failed {filename}: {str(e)}")
+            results.append(f"Failed {filename_on_disk}: {str(e)}")
 
     return jsonify({
         "ok": True, 
@@ -310,7 +293,6 @@ def ingest_local():
 
 @app.route("/ingest_pdf", methods=["POST"])
 def ingest_pdf():
-    """Manual upload via multipart form."""
     t0 = time.time()
     f = request.files.get("file")
     program = request.form.get("program")
@@ -321,26 +303,49 @@ def ingest_pdf():
     if not f or not program:
         return jsonify({"error": "file and program are required"}), 400
 
-    filename = title or f.name or "Uploaded PDF"
-    col = get_collection(program)
+    # Ensure DOCS_DIR exists
+    if not os.path.exists(DOCS_DIR):
+        os.makedirs(DOCS_DIR)
 
-    # Check duplicate
-    if file_already_ingested(col, filename):
-        return jsonify({"ok": True, "message": "File already exists. Skipping.", "chunks": 0})
+    # Secure and Save file
+    original_filename = secure_filename(f.filename)
+    save_path = os.path.join(DOCS_DIR, original_filename)
+    f.save(save_path) # <--- SAVING FILE PHYSICALLY
+
+    # Use user-provided title OR filename as the display title
+    final_title = title or original_filename
 
     try:
-        reader = PdfReader(f.stream)
-        full_text = []
-        for page in reader.pages:
-            full_text.append(page.extract_text() or "")
-        text = "\n\n".join(full_text).strip()
+        # Re-read the saved file for processing
+        # reader = PdfReader(save_path)
+        # full_text = []
+        # for page in reader.pages:
+        #     full_text.append(page.extract_text() or "")
+        # text = "\n\n".join(full_text).strip()
         
-        chunk_count = process_and_ingest(text, filename, program, effective_from, source_url)
+        # # Pass the filename_on_disk to the helper
+        # chunk_count = process_and_ingest(
+        #     text, 
+        #     final_title, 
+        #     program, 
+        #     effective_from, 
+        #     source_url, 
+        #     filename_on_disk=original_filename # <--- PASSING FILENAME
+        # )
+        text = pymupdf4llm.to_markdown(save_path)
+        
+        chunk_count = process_and_ingest(
+            text, 
+            final_title, 
+            program, 
+            effective_from, 
+            source_url, 
+            filename_on_disk=original_filename
+        )
         
         return jsonify({"ok": True, "chunks": chunk_count, "ms": int((time.time() - t0) * 1000)})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
 
 @app.route("/ask", methods=["POST"])
 def ask():

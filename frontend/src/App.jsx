@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import ReactMarkdown from "react-markdown";
 
 function cx(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -69,20 +70,56 @@ function Avatar({ role }) {
   );
 }
 
-function SourceCard({ s }) {
+function SourceCard({ s, backendUrl }) {
+  // Logic to determine the link
+  let link = null;
+  let label = "View Document";
+  let target = "_blank";
+
+  if (s.source_url && s.source_url.startsWith("http")) {
+    // It's an external web link
+    link = s.source_url;
+    label = "Open External Link";
+  } else if (s.filename) {
+    // It's a local file served by our backend
+    link = `${backendUrl}/documents/${s.filename}`;
+    label = "View PDF";
+  }
+
   return (
-    <div className="rounded-2xl border border-gray-200 p-4 bg-white shadow-sm">
-      <div className="text-sm font-semibold">{s.title || "(Untitled)"}</div>
-      <div className="text-xs text-gray-600 mt-1">Section: {s.section || "—"}</div>
-      <div className="text-xs text-gray-600">Effective: {s.effective_from || "—"}</div>
-      <div className="text-xs text-gray-600">Program: {(s.program || "—").toUpperCase()}</div>
-      {s.page != null && (
-        <div className="text-xs text-gray-600">Page: {s.page}</div>
-      )}
-      {s.link && (
-        <a href={s.link} target="_blank" rel="noreferrer" className="mt-2 inline-block text-xs text-blue-600 hover:underline">
-          Open Source
+    <div className="rounded-2xl border border-gray-200 p-4 bg-white shadow-sm hover:shadow-md transition-shadow">
+      <div className="text-sm font-semibold text-gray-900 line-clamp-2">
+        {s.title || "(Untitled)"}
+      </div>
+      
+      <div className="mt-2 space-y-1">
+        <div className="text-xs text-gray-500 flex justify-between">
+            <span>Program:</span> 
+            <span className="font-medium text-gray-700">{(s.program || "—").toUpperCase()}</span>
+        </div>
+        <div className="text-xs text-gray-500 flex justify-between">
+            <span>Effective:</span>
+            <span className="font-medium text-gray-700">{s.effective_from || "—"}</span>
+        </div>
+      </div>
+
+      {link ? (
+        <a 
+          href={link} 
+          target={target}
+          rel="noreferrer" 
+          className="mt-3 flex items-center justify-center w-full rounded-xl bg-blue-50 px-3 py-2 text-xs font-medium text-blue-700 hover:bg-blue-100 transition-colors"
+        >
+          <svg className="mr-1.5 h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+          </svg>
+          {label}
         </a>
+      ) : (
+        <div className="mt-3 text-center text-xs text-gray-400 italic">
+          No document link
+        </div>
       )}
     </div>
   );
@@ -90,14 +127,38 @@ function SourceCard({ s }) {
 
 function MessageBubble({ role, text }) {
   const isUser = role === "user";
+  
   return (
     <div className={cx("flex items-end gap-3", isUser ? "justify-end" : "justify-start")}>
       {!isUser && <Avatar role={role} />}
       <div className={cx(
-        "max-w-[78%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm",
+        "max-w-[85%] rounded-2xl px-5 py-3 text-sm leading-relaxed shadow-sm",
         isUser ? "bg-blue-600 text-white rounded-br-md" : "bg-gray-100 text-gray-900 rounded-bl-md"
       )}>
-        {text}
+        {/* CHANGED: Use ReactMarkdown to render the text */}
+        <ReactMarkdown
+          components={{
+            // Style the list bullets and indentation (Tailwind resets these by default)
+            ul: ({node, ...props}) => <ul className="list-disc pl-4 mb-2 space-y-1" {...props} />,
+            ol: ({node, ...props}) => <ol className="list-decimal pl-4 mb-2 space-y-1" {...props} />,
+            li: ({node, ...props}) => <li className="pl-1" {...props} />,
+            // Add spacing between paragraphs
+            p: ({node, ...props}) => <p className="mb-2 last:mb-0" {...props} />,
+            // Make bold text stand out
+            strong: ({node, ...props}) => <span className="font-bold" {...props} />,
+            // Style links if the AI generates them
+            a: ({node, ...props}) => (
+              <a 
+                {...props} 
+                target="_blank" 
+                rel="noreferrer" 
+                className={`underline ${isUser ? 'text-white' : 'text-blue-600 hover:text-blue-800'}`} 
+              />
+            ),
+          }}
+        >
+          {text}
+        </ReactMarkdown>
       </div>
       {isUser && <Avatar role={role} />}
     </div>
@@ -344,7 +405,20 @@ export default function App() {
                   <span className="text-xs text-gray-500">({answerSources.length})</span>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {answerSources.map((s, i) => <SourceCard key={i} s={s} />)}
+                  {answerSources.length > 0 && (
+                  <div className="mt-4">
+                    <div className="text-sm font-semibold mb-2 flex items-center gap-2">
+                      Sources
+                      <span className="text-xs text-gray-500">({answerSources.length})</span>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {/* Pass BACKEND_URL here */}
+                      {answerSources.map((s, i) => (
+                        <SourceCard key={i} s={s} backendUrl={BACKEND_URL} />
+                      ))}
+                    </div>
+                  </div>
+                )}
                 </div>
               </div>
             )}
