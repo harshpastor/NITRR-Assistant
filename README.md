@@ -164,26 +164,43 @@ college-rag-openai/
 ## 1) Backend
 See `backend/README.md`, or quick run:
 ```bash
+# Navigate to backend directory
 cd backend
-python -m venv .venv && source .venv/bin/activate  # Windows: .venv\Scripts\activate
+
+# Create virtual environment
+python -m venv venv
+
+# Activate venv
+# Windows:
+.\venv\Scripts\Activate
+# Mac/Linux:
+source venv/bin/activate
+
+# Install dependencies
 pip install -r requirements.txt
+```
 
-# set env (or copy .env.example and export)
-export OPENAI_API_KEY=sk-...
-export OPENAI_CHAT_MODEL=gpt-4o-mini
-export OPENAI_EMBED_MODEL=text-embedding-3-small
-export CHROMA_DIR=./chroma
-export PORT=8080
+**Configuration:**
+Create a `.env` file in the `backend` folder:
 
+```ini
+GOOGLE_API_KEY=your_actual_api_key_here
+GEMINI_CHAT_MODEL=gemini-1.5-flash-001
+GEMINI_EMBED_MODEL=models/text-embedding-004
+CHROMA_DIR=./chroma
+DOCS_DIR=./docs
+```
+
+**Run Server:**
+
+```bash
 python app.py
 ```
 
-### Test
-- Ingest: POST `http://localhost:8080/ingest_pdf` (multipart) with fields `file`, `program` (`btech` or `barch`), optional `title`, `effective_from`, `source_url`.
-- Ask: POST `http://localhost:8080/ask` with JSON `{"session_id":"test","program":"btech","query":"What is attendance requirement?"}`.
+### 2\. Frontend Setup
 
-## 2) Frontend
 ```bash
+# Navigate to frontend directory
 cd frontend
 npm i
 npm run dev  # open the URL printed by Vite
