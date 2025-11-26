@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 0aba5af (Update README.md)
 
 # 🎓 College Ordinance RAG Chatbot
 
