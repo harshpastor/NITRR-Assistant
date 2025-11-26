@@ -1,0 +1,7 @@
+flask==3.0.0
+flask-cors==4.0.0
+chromadb==0.5.5
+pypdf==4.2.0
+google-generativeai
+langchain-google-genai
+python-dotenv
