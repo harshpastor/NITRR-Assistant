@@ -1,3 +1,6 @@
+Here is a professional `README.md` for your project. It documents the setup, features, and crucially, the **"Challenges & Solutions"** section you requested to document the debugging journey.
+
+-----
 
 # 🎓 College Ordinance RAG Chatbot
 
@@ -64,7 +67,7 @@ Create a `.env` file in the `backend` folder:
 
 ```ini
 GOOGLE_API_KEY=your_actual_api_key_here
-GEMINI_CHAT_MODEL=gemini-2.5-flash-lite
+GEMINI_CHAT_MODEL=gemini-1.5-flash-001
 GEMINI_EMBED_MODEL=models/text-embedding-004
 CHROMA_DIR=./chroma
 DOCS_DIR=./docs
@@ -148,66 +151,3 @@ During the development of this project, we encountered several specific environm
 2.  Select a program (e.g., **B.Tech**).
 3.  **Upload a PDF** using the side panel (or ensure files are in `backend/docs` and hit the endpoint).
 4.  Ask questions\! Use the citations to view the source PDF.
-=======
-# College RAG Chatbot (OpenAI version)
-
-This bundle swaps **Ollama** for the **OpenAI API** for generation and embeddings.
-
-## Structure
-```
-college-rag-openai/
-  backend/   # Flask + ChromaDB + OpenAI
-  frontend/  # Vite + React (Tailwind via CDN)
-```
-
-## 1) Backend
-See `backend/README.md`, or quick run:
-```bash
-# Navigate to backend directory
-cd backend
-
-# Create virtual environment
-python -m venv venv
-
-# Activate venv
-# Windows:
-.\venv\Scripts\Activate
-# Mac/Linux:
-source venv/bin/activate
-
-# Install dependencies
-pip install -r requirements.txt
-```
-
-**Configuration:**
-Create a `.env` file in the `backend` folder:
-
-```ini
-GOOGLE_API_KEY=your_actual_api_key_here
-GEMINI_CHAT_MODEL=gemini-1.5-flash-001
-GEMINI_EMBED_MODEL=models/text-embedding-004
-CHROMA_DIR=./chroma
-DOCS_DIR=./docs
-```
-
-**Run Server:**
-
-```bash
-python app.py
-```
-
-### 2\. Frontend Setup
-
-```bash
-# Navigate to frontend directory
-cd frontend
-npm i
-npm run dev  # open the URL printed by Vite
-```
-Update the **Backend URL** field in the header if your backend URL differs.
-
-## Notes
-- ChromaDB persists under `backend/chroma/` by default.
-- The UI preserves all **variable names** and request/response shapes used earlier.
-- Confidence gating switches between **RAG** and **GENERIC** modes; tweak threshold in `/ask` as needed.
-
