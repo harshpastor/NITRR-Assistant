@@ -1,6 +1,3 @@
-Here is a professional `README.md` for your project. It documents the setup, features, and crucially, the **"Challenges & Solutions"** section you requested to document the debugging journey.
-
------
 
 # 🎓 College Ordinance RAG Chatbot
 
@@ -9,7 +6,7 @@ An intelligent, context-aware AI assistant designed to answer student queries re
 ## 🚀 Features
 
   * **Multi-Stream Support:** Separate knowledge bases for different programs (e.g., B.Tech, B.Arch).
-  * **Powered by Google Gemini:** Uses `gemini-1.5-flash` for reasoning and `text-embedding-004` for vector search.
+  * **Powered by Google Gemini:** Uses `gemini-2.5-lite` for reasoning and `text-embedding-004` for vector search.
   * **Context-Aware:** Remembers chat history to handle follow-up questions (e.g., "How many semesters?" -\> "Total").
   * **Smart Ingestion:** Supports manual PDF uploads and bulk ingestion from a local folder.
   * **Interactive Citations:** Responses include citations that link directly to the source PDF.
@@ -67,7 +64,7 @@ Create a `.env` file in the `backend` folder:
 
 ```ini
 GOOGLE_API_KEY=your_actual_api_key_here
-GEMINI_CHAT_MODEL=gemini-1.5-flash-001
+GEMINI_CHAT_MODEL=gemini-2.5-flash-lite
 GEMINI_EMBED_MODEL=models/text-embedding-004
 CHROMA_DIR=./chroma
 DOCS_DIR=./docs
