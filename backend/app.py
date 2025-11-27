@@ -468,7 +468,7 @@ def ingest_pdf():
     t0 = time.time()
     f = request.files.get("file")
     program = request.form.get("program")
-    title = request.form.get("title") or ""
+    title = request.form.get("title") or f.name
     effective_from = request.form.get("effective_from") or ""
     source_url = request.form.get("source_url") or ""
     

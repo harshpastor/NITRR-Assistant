@@ -490,7 +490,7 @@ export default function App() {
     const fd = new FormData();
     fd.append("file", ingFile);
     fd.append("program", program);
-    fd.append("title", ingTitle || "Untitled");
+    fd.append("title", ingTitle || ingFile.name);
     fd.append("effective_from", effectiveFrom);
     fd.append("source_url", sourceUrl);
 
