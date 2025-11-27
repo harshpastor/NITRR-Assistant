@@ -4,6 +4,7 @@ import time
 import uuid
 import glob
 import sqlite3
+import fitz
  
 from typing import List, Dict, Any
 from datetime import datetime
@@ -215,9 +216,78 @@ def process_and_ingest(text, title, program, effective_from=None, source_url=Non
     col.upsert(ids=ids, documents=chunks, embeddings=embeddings, metadatas=metadatas)
     return len(chunks)
 
-# ... (imports remain the same)
+def extract_markdown_per_page(path):
+    """
+    Extracts Markdown text from a PDF, keeping track of page numbers.
+    Returns a list of dicts: [{'text': '...', 'page': 1}, ...]
+    """
+    data = []
+    doc = fitz.open(path)
+    
+    # pymupdf4llm currently converts the whole doc. 
+    # We can simulate page-by-page by passing specific page indices if supported,
+    # or just use standard pymupdf text extraction for page awareness if markdown is tricky per page.
+    # Fortunately, pymupdf4llm.to_markdown accepts `pages`.
+    
+    for i in range(len(doc)):
+        try:
+            # Convert single page to markdown
+            text = pymupdf4llm.to_markdown(path, pages=[i])
+            if text.strip():
+                data.append({"text": text, "page": i + 1}) # 1-based index
+        except Exception as e:
+            print(f"Error reading page {i}: {e}")
+            
+    return data
 
-# 1. Update this function to accept history
+# 2. UPDATE: Chunker to respect page boundaries
+def process_and_ingest_pages(pages_data, title, program, effective_from=None, source_url=None, filename_on_disk=None):
+    if not effective_from: effective_from = datetime.now().strftime('%Y-%m-%d')
+    if not source_url: source_url = "empty"
+    
+    all_chunks = []
+    all_embeddings = []
+    all_metadatas = []
+    all_ids = []
+    
+    for entry in pages_data:
+        text = entry['text']
+        page_num = entry['page']
+        
+        # Split this page's text into chunks
+        page_chunks = simple_chunks(text, max_chars=1000, overlap=100) # Smaller chunks for better page precision
+        
+        if not page_chunks: continue
+        
+        # Embed chunks
+        embeddings = embed_texts(page_chunks, task_type="retrieval_document")
+        
+        for i, chunk in enumerate(page_chunks):
+            all_chunks.append(chunk)
+            all_embeddings.append(embeddings[i])
+            all_ids.append(str(uuid.uuid4()))
+            all_metadatas.append({
+                "title": title,
+                "filename": filename_on_disk or "unknown.pdf",
+                "page": page_num, # <--- NEW: STORE PAGE NUMBER
+                "section": "",
+                "program": program,
+                "effective_from": effective_from,
+                "source_url": source_url,
+            })
+
+    if not all_chunks:
+        return 0
+
+    col = get_collection(program)
+    # Delete old version to avoid duplicates
+    col.delete(where={"title": title}) 
+    
+    # Batch upsert (Chroma handles large batches well, but safe to do all at once for moderate docs)
+    col.upsert(ids=all_ids, documents=all_chunks, embeddings=all_embeddings, metadatas=all_metadatas)
+    return len(all_chunks)
+
+
 def gemini_chat_answer(question: str, context_chunks: List[Dict[str, Any]], history: List[Dict[str, str]]) -> str:
     # Improved System Prompt
    
@@ -371,23 +441,21 @@ def ingest_local():
             continue
 
         try:
-            text = pymupdf4llm.to_markdown(path)
+            # CHANGED: Use the new page-aware extractor
+            pages_data = extract_markdown_per_page(path)
             
-            chunk_count = process_and_ingest(text, filename, program, filename_on_disk=filename)
-            # full_text = []
-            # for page in reader.pages:
-            #     full_text.append(page.extract_text() or "")
-            # text = "\n\n".join(full_text).strip()
-            
-            chunk_count = process_and_ingest(
-                text, 
+            chunk_count = process_and_ingest_pages(
+                pages_data, 
                 filename, 
                 program, 
-                filename_on_disk=filename_on_disk # <--- PASSING FILENAME
+                filename_on_disk=filename
             )
-            results.append(f"Ingested {filename_on_disk} ({chunk_count} chunks)")
+            results.append(f"Ingested {filename} ({chunk_count} chunks)")
         except Exception as e:
-            results.append(f"Failed {filename_on_disk}: {str(e)}")
+            results.append(f"Failed {filename}: {str(e)}")
+
+    # Clear BM25 cache so the new files are searchable via keywords immediately
+    invalidate_bm25_cache(program)
 
     return jsonify({
         "ok": True, 
@@ -407,49 +475,36 @@ def ingest_pdf():
     if not f or not program:
         return jsonify({"error": "file and program are required"}), 400
 
-    # Ensure DOCS_DIR exists
-    if not os.path.exists(DOCS_DIR):
-        os.makedirs(DOCS_DIR)
+    if not os.path.exists(DOCS_DIR): os.makedirs(DOCS_DIR)
 
-    # Secure and Save file
     original_filename = secure_filename(f.filename)
     save_path = os.path.join(DOCS_DIR, original_filename)
-    f.save(save_path) # <--- SAVING FILE PHYSICALLY
+    f.save(save_path)
 
-    # Use user-provided title OR filename as the display title
     final_title = title or original_filename
 
     try:
-        # Re-read the saved file for processing
-        # reader = PdfReader(save_path)
-        # full_text = []
-        # for page in reader.pages:
-        #     full_text.append(page.extract_text() or "")
-        # text = "\n\n".join(full_text).strip()
+        # CHANGED: Extract Pages
+        pages_data = extract_markdown_per_page(save_path)
         
-        # # Pass the filename_on_disk to the helper
-        # chunk_count = process_and_ingest(
-        #     text, 
-        #     final_title, 
-        #     program, 
-        #     effective_from, 
-        #     source_url, 
-        #     filename_on_disk=original_filename # <--- PASSING FILENAME
-        # )
-        text = pymupdf4llm.to_markdown(save_path)
-        
-        chunk_count = process_and_ingest(
-            text, 
+        chunk_count = process_and_ingest_pages(
+            pages_data, 
             final_title, 
             program, 
             effective_from, 
             source_url, 
             filename_on_disk=original_filename
         )
+        
+        # Clear cache
         invalidate_bm25_cache(program)
-        return jsonify({"ok": True, "chunks": chunk_count, "ms": int((time.time() - t0) * 1000)})
+        
+        return jsonify({"ok": True, "chunks": chunk_count, "pages": len(pages_data), "ms": int((time.time() - t0) * 1000)})
     except Exception as e:
+        print(e)
         return jsonify({"error": str(e)}), 500
+    
+    
 @app.route("/ask", methods=["POST"])
 def ask():
     t0 = time.time()

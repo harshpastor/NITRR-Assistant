@@ -1,10 +1,61 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm"; // Ensure you run: npm install remark-gfm
+import { pdfjs, Document, Page } from 'react-pdf';
+import 'react-pdf/dist/Page/AnnotationLayer.css';
+import 'react-pdf/dist/Page/TextLayer.css';
+
+// Configure the worker (Required for react-pdf to work in Vite)
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 function cx(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
+// --- PDF MODAL COMPONENT ---
+function PdfModal({ url, pageNumber, onClose }) {
+  const [numPages, setNumPages] = useState(null);
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+      <div className="relative bg-white rounded-2xl w-full max-w-4xl h-[90vh] flex flex-col overflow-hidden shadow-2xl">
+        
+        {/* Header */}
+        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 bg-gray-50">
+          <h3 className="text-sm font-semibold text-gray-700">Document Viewer (Page {pageNumber})</h3>
+          <button 
+            onClick={onClose} 
+            className="p-1.5 rounded-full hover:bg-gray-200 transition text-gray-500"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        {/* PDF Area */}
+        <div className="flex-1 overflow-auto bg-gray-100 flex justify-center p-4">
+          <Document
+            file={url}
+            onLoadSuccess={({ numPages }) => setNumPages(numPages)}
+            className="shadow-lg"
+            loading={<div className="text-gray-500 text-sm">Loading PDF...</div>}
+          >
+            <Page 
+              pageNumber={Number(pageNumber) || 1} 
+              renderTextLayer={true} 
+              renderAnnotationLayer={true}
+              scale={1.2} 
+              className="rounded-lg overflow-hidden bg-white"
+            />
+          </Document>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// --- HOOKS ---
 function useSessionId() {
   const [sid, setSid] = useState("");
   useEffect(() => {
@@ -22,6 +73,7 @@ function useSessionId() {
   return sid;
 }
 
+// --- UI COMPONENTS ---
 function ProgramToggle({ value, onChange, disabled }) {
   return (
     <div className="inline-flex gap-2 rounded-2xl bg-gray-100 p-1">
@@ -44,21 +96,6 @@ function ProgramToggle({ value, onChange, disabled }) {
   );
 }
 
-function ModeBadge({ mode }) {
-  if (!mode) return null;
-  const style = mode === "RAG"
-    ? "bg-emerald-100 text-emerald-700 border-emerald-200"
-    : mode === "GENERIC"
-    ? "bg-amber-100 text-amber-700 border-amber-200"
-    : "bg-gray-100 text-gray-700 border-gray-200";
-  return (
-    <span className={cx("inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs border", style)}>
-      <span className="h-1.5 w-1.5 rounded-full bg-current"></span>
-      {mode}
-    </span>
-  );
-}
-
 function Avatar({ role }) {
   return (
     <div className={cx(
@@ -70,22 +107,15 @@ function Avatar({ role }) {
   );
 }
 
-function SourceCard({ s, backendUrl }) {
-  // Logic to determine the link
+function SourceCard({ s, backendUrl, onView }) {
+  const isLocal = s.filename && !s.source_url?.startsWith("http");
   let link = null;
-  let label = "View Document";
-  let target = "_blank";
-
+  
   if (s.source_url && s.source_url.startsWith("http")) {
-    // It's an external web link
     link = s.source_url;
-    label = "Open External Link";
   } else if (s.filename) {
-    // It's a local file served by our backend
     link = `${backendUrl}/documents/${s.filename}`;
-    label = "View PDF";
   }
-
 
   return (
     <div className="rounded-2xl border border-gray-200 p-4 bg-white shadow-sm hover:shadow-md transition-shadow">
@@ -102,35 +132,37 @@ function SourceCard({ s, backendUrl }) {
             <span>Effective:</span>
             <span className="font-medium text-gray-700">{s.effective_from || "—"}</span>
         </div>
+        <div className="text-xs text-gray-500 flex justify-between mt-1 pt-1 border-t border-gray-50">
+          <span>Page:</span>
+          <span className="font-medium text-gray-700">{s.page || "1"}</span>
+        </div>
       </div>
 
-      {link ? (
-        <a 
-          href={link} 
-          target={target}
-          rel="noreferrer" 
-          className="mt-3 flex items-center justify-center w-full rounded-xl bg-blue-50 px-3 py-2 text-xs font-medium text-blue-700 hover:bg-blue-100 transition-colors"
-        >
-          <svg className="mr-1.5 h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <button 
+        onClick={(e) => {
+          e.preventDefault();
+          if (isLocal) {
+            onView(s.filename, s.page); 
+          } else if (link) {
+            window.open(link, "_blank");
+          }
+        }}
+        className="mt-3 flex items-center justify-center w-full rounded-xl bg-blue-50 px-3 py-2 text-xs font-medium text-blue-700 hover:bg-blue-100 transition-colors"
+      >
+        <svg className="mr-1.5 h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-          </svg>
-          {label}
-        </a>
-      ) : (
-        <div className="mt-3 text-center text-xs text-gray-400 italic">
-          No document link
-        </div>
-      )}
+        </svg>
+        {isLocal ? `View on Page ${s.page || 1}` : "Open External Link"}
+      </button>
     </div>
   );
 }
 
 function ReportsList({ backendUrl }) {
-  const [reports, setReports] = React.useState([]);
-  const [visible, setVisible] = React.useState(false);
+  const [reports, setReports] = useState([]);
+  const [visible, setVisible] = useState(false);
 
-  // Fetch reports
   const fetchReports = async () => {
     try {
       const res = await fetch(`${backendUrl}/admin/reports`);
@@ -141,14 +173,12 @@ function ReportsList({ backendUrl }) {
     }
   };
 
-  // Delete report
   const handleDelete = async (id, e) => {
-    e.stopPropagation(); // Prevent toggling the list when clicking delete
+    e.stopPropagation(); 
     if (!confirm("Are you sure you want to delete this report?")) return;
 
     try {
       await fetch(`${backendUrl}/admin/reports/${id}`, { method: "DELETE" });
-      // Remove from UI immediately
       setReports(prev => prev.filter(r => r.id !== id));
     } catch (error) {
       alert("Failed to delete report");
@@ -183,8 +213,6 @@ function ReportsList({ backendUrl }) {
           
           {reports.map((r) => (
             <div key={r.id} className="group relative p-3 bg-red-50 rounded-xl border border-red-100 text-xs transition hover:shadow-sm hover:border-red-200">
-              
-              {/* Delete Button (Visible on Hover) */}
               <button 
                 onClick={(e) => handleDelete(r.id, e)}
                 className="absolute top-2 right-2 p-1.5 rounded-full bg-white text-gray-400 hover:text-red-600 hover:bg-red-50 opacity-0 group-hover:opacity-100 transition shadow-sm"
@@ -201,11 +229,9 @@ function ReportsList({ backendUrl }) {
                 </svg>
                 Req: {r.suggested_document}
               </div>
-              
               <div className="text-gray-600 mb-2 leading-relaxed">
                 <span className="font-medium text-gray-500">Query:</span> "{r.failed_query}"
               </div>
-              
               <div className="flex justify-between items-center pt-2 border-t border-red-100/50 text-[10px] text-gray-400 uppercase tracking-wider">
                 <span className="bg-white px-1.5 py-0.5 rounded border border-red-100">{r.program}</span>
                 <span>{r.timestamp}</span>
@@ -225,21 +251,17 @@ function MessageBubble({ role, text }) {
     <div className={cx("flex items-end gap-3", isUser ? "justify-end" : "justify-start")}>
       {!isUser && <Avatar role={role} />}
       <div className={cx(
-        "max-w-[85%] rounded-2xl px-5 py-3 text-sm leading-relaxed shadow-sm",
+        "max-w-[85%] rounded-2xl px-5 py-3 text-sm leading-relaxed shadow-sm overflow-hidden",
         isUser ? "bg-blue-600 text-white rounded-br-md" : "bg-gray-100 text-gray-900 rounded-bl-md"
       )}>
-        {/* CHANGED: Use ReactMarkdown to render the text */}
         <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
           components={{
-            // Style the list bullets and indentation (Tailwind resets these by default)
             ul: ({node, ...props}) => <ul className="list-disc pl-4 mb-2 space-y-1" {...props} />,
             ol: ({node, ...props}) => <ol className="list-decimal pl-4 mb-2 space-y-1" {...props} />,
             li: ({node, ...props}) => <li className="pl-1" {...props} />,
-            // Add spacing between paragraphs
             p: ({node, ...props}) => <p className="mb-2 last:mb-0" {...props} />,
-            // Make bold text stand out
             strong: ({node, ...props}) => <span className="font-bold" {...props} />,
-            // Style links if the AI generates them
             a: ({node, ...props}) => (
               <a 
                 {...props} 
@@ -247,6 +269,21 @@ function MessageBubble({ role, text }) {
                 rel="noreferrer" 
                 className={`underline ${isUser ? 'text-white' : 'text-blue-600 hover:text-blue-800'}`} 
               />
+            ),
+            // TABLE STYLING
+            table: ({node, ...props}) => (
+              <div className="overflow-x-auto my-4 rounded-lg border border-gray-200">
+                <table className="min-w-full divide-y divide-gray-200 bg-white text-sm" {...props} />
+              </div>
+            ),
+            thead: ({node, ...props}) => <thead className="bg-gray-50" {...props} />,
+            tbody: ({node, ...props}) => <tbody className="divide-y divide-gray-200 bg-white" {...props} />,
+            tr: ({node, ...props}) => <tr className="" {...props} />,
+            th: ({node, ...props}) => (
+              <th className="px-3 py-3.5 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider" {...props} />
+            ),
+            td: ({node, ...props}) => (
+              <td className="whitespace-normal px-3 py-4 text-gray-700" {...props} />
             ),
           }}
         >
@@ -273,25 +310,27 @@ function TypingDots() {
   );
 }
 
+// --- MAIN APP COMPONENT ---
 export default function App() {
   const sessionId = useSessionId();
   const [BACKEND_URL, setBackendUrl] = useState("http://localhost:8080");
-  const [program, setProgram] = useState(/** @type {"btech"|"barch"|null} */(null));
+  const [program, setProgram] = useState(null);
   const [query, setQuery] = useState("");
-  const [messages, setMessages] = useState(
-   /** @type {{role:"user"|"assistant", text:string}[]} */ ([])
-);
+  const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [answerSources, setAnswerSources] = useState([]);
   const [lastLatency, setLastLatency] = useState(null);
-  const [mode, setMode] = useState(null); // RAG | GENERIC | SELECT_PROGRAM
+  const [mode, setMode] = useState(null); 
+  
+  // State for PDF Viewer Modal
+  const [viewPdf, setViewPdf] = useState(null); // { url: string, page: number }
 
-  // ingest
-  let [ingFile, setIngFile] = useState(null);
-  let [ingTitle, setIngTitle] = useState("");
-  let [ingEff, setIngEff] = useState("");
-  let [ingUrl, setIngUrl] = useState("");
-  let [ingStatus, setIngStatus] = useState("");
+  // Ingestion State
+  const [ingFile, setIngFile] = useState(null);
+  const [ingTitle, setIngTitle] = useState("");
+  const [ingEff, setIngEff] = useState("");
+  const [ingUrl, setIngUrl] = useState("");
+  const [ingStatus, setIngStatus] = useState("");
 
   const fileInputRef = useRef(null);
   const canAsk = useMemo(() => !!query.trim() && !!sessionId, [query, sessionId]);
@@ -310,18 +349,14 @@ export default function App() {
       return;
     }
     const q = query.trim();
-    
-    // Create the new user message object
     const newUserMsg = { role: "user", text: q };
     
-    // Update UI immediately
     setMessages(prev => [...prev, newUserMsg]);
     setQuery("");
     setLoading(true);
     setAnswerSources([]);
 
     try {
-      // CHANGED: We now send the 'history' (existing messages) + the new query
       const res = await fetch(`${BACKEND_URL}/ask`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -329,7 +364,7 @@ export default function App() {
             session_id: sessionId, 
             program, 
             query: q,
-            history: messages // <--- Send existing chat history
+            history: messages 
         })
       });
       const data = await res.json();
@@ -360,20 +395,13 @@ export default function App() {
         return; 
     }
 
-    // Set default values for optional fields if they are not provided
-    let effectiveFrom = ingEff || new Date().toISOString().split('T')[0];  // Default to current date
-    let sourceUrl = ingUrl || "empty";  // Default to "empty" if no source URL
+    let effectiveFrom = ingEff || new Date().toISOString().split('T')[0];
+    let sourceUrl = ingUrl || "empty";
 
-    console.log('Program:', program);
-    console.log('Title:', ingTitle);
-    console.log('Effective From:', effectiveFrom);
-    console.log('Source URL:', sourceUrl);
-
-    // Prepare FormData for file upload
     const fd = new FormData();
     fd.append("file", ingFile);
     fd.append("program", program);
-    fd.append("title", ingTitle || "Untitled");  // Default to "Untitled" if no title provided
+    fd.append("title", ingTitle || "Untitled");
     fd.append("effective_from", effectiveFrom);
     fd.append("source_url", sourceUrl);
 
@@ -385,16 +413,14 @@ export default function App() {
         if (res.ok) {
             setIngStatus(`OK: ${data.chunks ?? "?"} chunks from ${data.pages ?? "?"} pages`);
             setIngFile(null);
-            if (fileInputRef.current) fileInputRef.current.value = ""; // Reset file input
+            if (fileInputRef.current) fileInputRef.current.value = ""; 
         } else {
             setIngStatus(`Failed: ${data.error || res.status}`);
         }
     } catch (e) {
         setIngStatus(`Error: ${e}`);
     }
-}
-
-
+  }
 
   const suggestions = [
     "What is the attendance requirement?",
@@ -412,6 +438,16 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[radial-gradient(ellipse_at_top,rgba(59,130,246,0.08),transparent_50%),linear-gradient(to_bottom,#ffffff,#f8fafc)] text-gray-900">
+      
+      {/* PDF Modal Render */}
+      {viewPdf && (
+        <PdfModal 
+          url={viewPdf.url} 
+          pageNumber={viewPdf.page} 
+          onClose={() => setViewPdf(null)} 
+        />
+      )}
+
       <header className="sticky top-0 z-10 backdrop-blur supports-[backdrop-filter]:bg-white/70 bg-white/60 border-b border-gray-200">
         <div className="mx-auto max-w-6xl px-4 py-3 flex items-center gap-4">
           <div className="flex items-center gap-3">
@@ -491,6 +527,7 @@ export default function App() {
               >{loading ? "Asking…" : "Send"}</button>
             </div>
 
+            {/* ANSWER SOURCES */}
             {answerSources.length > 0 && (
               <div className="mt-4">
                 <div className="text-sm font-semibold mb-2 flex items-center gap-2">
@@ -498,20 +535,19 @@ export default function App() {
                   <span className="text-xs text-gray-500">({answerSources.length})</span>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {answerSources.length > 0 && (
-                  <div className="mt-4">
-                    <div className="text-sm font-semibold mb-2 flex items-center gap-2">
-                      Sources
-                      <span className="text-xs text-gray-500">({answerSources.length})</span>
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {/* Pass BACKEND_URL here */}
-                      {answerSources.map((s, i) => (
-                        <SourceCard key={i} s={s} backendUrl={BACKEND_URL} />
-                      ))}
-                    </div>
-                  </div>
-                )}
+                  {answerSources.map((s, i) => (
+                    <SourceCard 
+                      key={i} 
+                      s={s} 
+                      backendUrl={BACKEND_URL}
+                      onView={(filename, page) => {
+                        setViewPdf({
+                          url: `${BACKEND_URL}/documents/${filename}`,
+                          page: Number(page) || 1
+                        });
+                      }}
+                    />
+                  ))}
                 </div>
               </div>
             )}
@@ -529,15 +565,15 @@ export default function App() {
             <input className="w-full rounded-xl border border-gray-300 px-3 py-2 text-sm" placeholder="Effective from (YYYY-MM-DD) (optional)" value={ingEff} onChange={(e)=>setIngEff(e.target.value)} />
             <input className="w-full rounded-xl border border-gray-300 px-3 py-2 text-sm" placeholder="Source URL (optional)" value={ingUrl} onChange={(e)=>setIngUrl(e.target.value)} />
             <button
-    onClick={handleIngest}  // Make sure this is correctly calling the function
-    disabled={!program || loading}  // Disable if not ready (no program selected or loading)
-    className={cx(
-        "w-full px-4 py-2 rounded-xl text-sm font-medium transition",
-        (!program || loading) ? "bg-gray-200 text-gray-500" : "bg-green-600 text-white hover:bg-green-700"
-    )}
->
-    Upload to {program ? program.toUpperCase() : "(select stream)"}
-</button>
+                onClick={handleIngest}
+                disabled={!program || loading}
+                className={cx(
+                    "w-full px-4 py-2 rounded-xl text-sm font-medium transition",
+                    (!program || loading) ? "bg-gray-200 text-gray-500" : "bg-green-600 text-white hover:bg-green-700"
+                )}
+            >
+                Upload to {program ? program.toUpperCase() : "(select stream)"}
+            </button>
 
             {ingStatus && <div className="text-xs text-gray-700">{ingStatus}</div>}
 
