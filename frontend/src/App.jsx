@@ -514,8 +514,8 @@ export default function App() {
   const suggestions = [
     "What is the attendance requirement?",
     "Is a 6-month internship allowed in 8th semester?",
-    "How is CGPA calculated?",
-    "What is the re-evaluation window?"
+    "How is grades calculated?",
+    "How long is the course?"
   ];
 
   function handleSuggestionClick(s) {
@@ -540,9 +540,9 @@ export default function App() {
       <header className="sticky top-0 z-10 backdrop-blur supports-[backdrop-filter]:bg-white/70 bg-white/60 border-b border-gray-200">
         <div className="mx-auto max-w-6xl px-4 py-3 flex items-center gap-4">
           <div className="flex items-center gap-3">
-            <div className="h-8 w-8 rounded-xl bg-blue-600 text-white flex items-center justify-center text-sm font-bold shadow">AO</div>
+            <div className="h-8 w-8 rounded-xl bg-blue-600 text-white flex items-center justify-center text-sm font-bold shadow">NITRR</div>
             <div>
-              <div className="text-lg font-semibold leading-5">Academic Ordinance Assistant</div>
+              <div className="text-lg font-semibold leading-5">NITRR - Academic Ordinance Assistant</div>
               <div className="text-[11px] text-gray-500 -mt-0.5">Answering from official documents with citations</div>
             </div>
           </div>
