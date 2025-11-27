@@ -12,6 +12,70 @@ function cx(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
+// --- FEEDBACK LIST COMPONENT ---
+function FeedbackList({ backendUrl }) {
+  const [items, setItems] = useState([]);
+  const [visible, setVisible] = useState(false);
+
+  const fetchFeedback = async () => {
+    try {
+      const res = await fetch(`${backendUrl}/admin/feedback`);
+      const data = await res.json();
+      setItems(data);
+    } catch (e) {
+      console.error("Failed to fetch feedback", e);
+    }
+  };
+
+  const handleDelete = async (id, e) => {
+    e.stopPropagation();
+    if (!confirm("Delete this feedback alert?")) return;
+    try {
+      await fetch(`${backendUrl}/admin/feedback/${id}`, { method: "DELETE" });
+      setItems(prev => prev.filter(i => i.id !== id));
+    } catch (error) { alert("Failed"); }
+  };
+
+  return (
+    <div className="mt-4 border-t border-gray-100 pt-4">
+      <button 
+        onClick={() => { if(!visible) fetchFeedback(); setVisible(!visible); }}
+        className="flex items-center gap-2 text-sm font-medium text-gray-700 w-full hover:bg-gray-50 p-2 rounded-lg transition"
+      >
+        <div className="relative">
+             <span className="flex items-center justify-center w-5 h-5 rounded bg-amber-100 text-amber-600 text-[10px] font-bold">👎</span>
+             {items.length > 0 && !visible && (
+                 <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
+                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                   <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>
+                 </span>
+             )}
+        </div>
+        Negative Feedback
+        <span className="ml-auto text-xs text-gray-400">{visible ? "Hide" : "Show"}</span>
+      </button>
+
+      {visible && (
+        <div className="mt-3 space-y-3 max-h-60 overflow-y-auto pr-1 scrollbar-thin">
+          {items.length === 0 && <div className="text-xs text-gray-400 italic p-2">No negative feedback.</div>}
+          {items.map((item) => (
+            <div key={item.id} className="group relative p-3 bg-amber-50 rounded-xl border border-amber-100 text-xs transition hover:shadow-sm">
+               <button 
+                onClick={(e) => handleDelete(item.id, e)}
+                className="absolute top-2 right-2 p-1.5 rounded-full bg-white text-gray-400 hover:text-red-600 hover:bg-red-50 opacity-0 group-hover:opacity-100 transition shadow-sm"
+              >
+                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+              <div className="font-medium text-gray-800 mb-1">Query: "{item.query}"</div>
+              <div className="text-gray-500 line-clamp-2 mb-2">Bot: {item.response.substring(0, 80)}...</div>
+              <div className="text-[10px] text-gray-400 uppercase">{item.timestamp}</div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 // --- PDF MODAL COMPONENT ---
 function PdfModal({ url, pageNumber, onClose }) {
   const [numPages, setNumPages] = useState(null);
@@ -244,51 +308,76 @@ function ReportsList({ backendUrl }) {
   );
 }
 
-function MessageBubble({ role, text }) {
+// Update function signature to accept new props
+function MessageBubble({ role, text, relatedQuery, program, backendUrl }) {
   const isUser = role === "user";
+  const [vote, setVote] = useState(null); // 'up' | 'down' | null
+
+  const handleVote = async (rating) => {
+    if (vote) return; // Prevent double voting
+    setVote(rating);
+
+    try {
+      await fetch(`${backendUrl}/feedback`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          program: program,
+          query: relatedQuery,
+          response: text,
+          rating: rating
+        })
+      });
+    } catch (e) {
+      console.error("Feedback failed", e);
+    }
+  };
   
   return (
     <div className={cx("flex items-end gap-3", isUser ? "justify-end" : "justify-start")}>
       {!isUser && <Avatar role={role} />}
       <div className={cx(
-        "max-w-[85%] rounded-2xl px-5 py-3 text-sm leading-relaxed shadow-sm overflow-hidden",
+        "max-w-[85%] rounded-2xl px-5 py-3 text-sm leading-relaxed shadow-sm overflow-hidden group relative",
         isUser ? "bg-blue-600 text-white rounded-br-md" : "bg-gray-100 text-gray-900 rounded-bl-md"
       )}>
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
-          components={{
-            ul: ({node, ...props}) => <ul className="list-disc pl-4 mb-2 space-y-1" {...props} />,
-            ol: ({node, ...props}) => <ol className="list-decimal pl-4 mb-2 space-y-1" {...props} />,
-            li: ({node, ...props}) => <li className="pl-1" {...props} />,
-            p: ({node, ...props}) => <p className="mb-2 last:mb-0" {...props} />,
-            strong: ({node, ...props}) => <span className="font-bold" {...props} />,
-            a: ({node, ...props}) => (
-              <a 
-                {...props} 
-                target="_blank" 
-                rel="noreferrer" 
-                className={`underline ${isUser ? 'text-white' : 'text-blue-600 hover:text-blue-800'}`} 
-              />
-            ),
-            // TABLE STYLING
-            table: ({node, ...props}) => (
-              <div className="overflow-x-auto my-4 rounded-lg border border-gray-200">
-                <table className="min-w-full divide-y divide-gray-200 bg-white text-sm" {...props} />
-              </div>
-            ),
-            thead: ({node, ...props}) => <thead className="bg-gray-50" {...props} />,
-            tbody: ({node, ...props}) => <tbody className="divide-y divide-gray-200 bg-white" {...props} />,
-            tr: ({node, ...props}) => <tr className="" {...props} />,
-            th: ({node, ...props}) => (
-              <th className="px-3 py-3.5 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider" {...props} />
-            ),
-            td: ({node, ...props}) => (
-              <td className="whitespace-normal px-3 py-4 text-gray-700" {...props} />
-            ),
-          }}
+          components={{ /* ... (Keep your existing table/style components) ... */ }}
         >
           {text}
         </ReactMarkdown>
+
+        {/* FEEDBACK BUTTONS (Only for AI) */}
+        {!isUser && (
+          <div className="mt-2 pt-2 border-t border-gray-200/50 flex gap-3 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
+            <button 
+              onClick={() => handleVote("up")}
+              disabled={vote !== null}
+              className={cx(
+                "flex items-center gap-1 text-xs transition",
+                vote === "up" ? "text-green-600 font-medium" : "text-gray-400 hover:text-green-600"
+              )}
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
+              </svg>
+              {vote === "up" ? "Helpful" : ""}
+            </button>
+            <button 
+               onClick={() => handleVote("down")}
+               disabled={vote !== null}
+               className={cx(
+                 "flex items-center gap-1 text-xs transition",
+                 vote === "down" ? "text-amber-600 font-medium" : "text-gray-400 hover:text-amber-600"
+               )}
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14H5.236a2 2 0 01-1.789-2.894l3.5-7A2 2 0 018.736 3h4.018a2 2 0 01.485.06l2.94 1.108V11a2 2 0 01-2 2h-2.5m-4 9V20m0 0h2m-2 0H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5M20 7v6a2 2 0 01-2 2h-2.5" />
+              </svg>
+              {vote === "down" ? "Not Helpful" : ""}
+            </button>
+          </div>
+        )}
       </div>
       {isUser && <Avatar role={role} />}
     </div>
@@ -503,7 +592,15 @@ export default function App() {
               </div>
             )}
             {messages.map((m, i) => (
-              <MessageBubble key={i} role={m.role} text={m.text} />
+              <MessageBubble 
+                key={i} 
+                role={m.role} 
+                text={m.text}
+                // Pass the previous message as the user query (if this is AI)
+                relatedQuery={m.role === "assistant" && i > 0 ? messages[i-1].text : ""}
+                program={program}
+                backendUrl={BACKEND_URL}
+              />
             ))}
             {loading && <TypingDots />}
           </div>
@@ -582,6 +679,7 @@ export default function App() {
             </div>
           </div>
           <ReportsList backendUrl={BACKEND_URL} />
+          <FeedbackList backendUrl={BACKEND_URL} />
         </aside>
       </main>
 
