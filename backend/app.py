@@ -13,6 +13,9 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 from werkzeug.utils import secure_filename
 from flask import send_from_directory
+from rank_bm25 import BM25Okapi
+from sentence_transformers import CrossEncoder
+import numpy as np
 
 # Vector store
 import chromadb
@@ -60,6 +63,53 @@ def get_collection(program: str):
     except Exception:
         col = chroma_client.create_collection(name=name, metadata={"hnsw:space": "cosine"})
     return col
+
+# ------------ Re-ranking -------------
+print("Loading Cross-Encoder model... (this may take a moment)")
+# This model is optimized for re-ranking (scoring query-doc pairs)
+CROSS_ENCODER = CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2')
+
+# Global cache to hold BM25 indices per program so we don't rebuild every time
+# Structure: { "btech": { "model": BM25Okapi, "texts": [str], "metadatas": [dict] } }
+BM25_CACHE = {}
+def invalidate_bm25_cache(program):
+    """Call this after ingestion to force a rebuild of the keyword index."""
+    if program in BM25_CACHE:
+        del BM25_CACHE[program]
+def get_bm25_data(program):
+    """
+    Fetches all documents from Chroma for a specific program and builds/returns
+    the BM25 index. Uses caching to be fast.
+    """
+    if program in BM25_CACHE:
+        return BM25_CACHE[program]
+    
+    print(f"Building BM25 index for {program}...")
+    col = get_collection(program)
+    
+    # Fetch all documents to build the keyword index
+    # Note: In production with millions of docs, you'd use a separate search engine like Elastic.
+    # For a college project (thousands of chunks), in-memory is fine.
+    all_docs = col.get() # Fetches IDs, metadatas, documents
+    
+    texts = all_docs['documents']
+    metadatas = all_docs['metadatas']
+    
+    if not texts:
+        return None
+
+    # Tokenize corpus for BM25
+    tokenized_corpus = [doc.lower().split() for doc in texts]
+    bm25 = BM25Okapi(tokenized_corpus)
+    
+    # Cache it
+    data = {
+        "model": bm25,
+        "texts": texts,
+        "metadatas": metadatas
+    }
+    BM25_CACHE[program] = data
+    return data
 
 # ------------ Utilities -------------
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "reports.db")
@@ -396,18 +446,17 @@ def ingest_pdf():
             source_url, 
             filename_on_disk=original_filename
         )
-        
+        invalidate_bm25_cache(program)
         return jsonify({"ok": True, "chunks": chunk_count, "ms": int((time.time() - t0) * 1000)})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
 @app.route("/ask", methods=["POST"])
 def ask():
     t0 = time.time()
     data = request.get_json(force=True, silent=True) or {}
     program = data.get("program")
     query = data.get("query", "").strip()
-    history = data.get("history", []) # <--- Get history from frontend
+    history = data.get("history", [])
 
     if not program:
         return jsonify({"mode": "ERROR", "answer": "Please provide 'program'."})
@@ -423,52 +472,98 @@ def ask():
         })
 
     try:
-        # --- IMPROVEMENT: CONTEXTUAL SEARCH ---
-        # If the query is very short (like "Total"), it might be an answer to a previous question.
-        # We append the previous user message to the search query to get better vector results.
+        # --- 1. PREPARE SEARCH QUERY ---
         search_query = query
         if history and len(query.split()) < 3:
             last_user_msg = next((m['text'] for m in reversed(history) if m['role'] == 'user'), "")
             if last_user_msg:
-                # Combine for search: "How many semesters? Total"
                 search_query = f"{last_user_msg} {query}"
-        
-        # Embed the (possibly enhanced) query
+
+        # --- 2. VECTOR SEARCH (Semantic) ---
+        # Get top 10 candidates from Vector DB
         q_emb = embed_texts([search_query], task_type="retrieval_query")[0]
+        res_vec = col.query(query_embeddings=[q_emb], n_results=10, include=["documents", "metadatas"])
         
-        res = col.query(query_embeddings=[q_emb], n_results=5, include=["documents", "metadatas", "distances"])
+        vector_candidates = []
+        if res_vec['documents']:
+            for doc, meta in zip(res_vec['documents'][0], res_vec['metadatas'][0]):
+                vector_candidates.append({"text": doc, "metadata": meta, "origin": "vector"})
+
+        # --- 3. KEYWORD SEARCH (BM25) ---
+        # Get top 10 candidates from Keyword Match
+        keyword_candidates = []
+        bm25_data = get_bm25_data(program)
+        if bm25_data:
+            tokenized_query = search_query.lower().split()
+            # Get scores for all docs
+            doc_scores = bm25_data["model"].get_scores(tokenized_query)
+            # Find top 10 indices
+            top_n_indices = np.argsort(doc_scores)[-10:]
+            for idx in reversed(top_n_indices):
+                if doc_scores[idx] > 0: # Only include if there is at least some match
+                    keyword_candidates.append({
+                        "text": bm25_data["texts"][idx],
+                        "metadata": bm25_data["metadatas"][idx],
+                        "origin": "keyword"
+                    })
+
+        # --- 4. MERGE & DEDUPLICATE ---
+        unique_candidates = {}
+        for c in vector_candidates + keyword_candidates:
+            unique_candidates[c['text']] = c # Use text as key to remove duplicates
         
-        docs = res['documents'][0]
-        metas = res['metadatas'][0]
-        dists = res['distances'][0]
+        merged_list = list(unique_candidates.values())
+
+        if not merged_list:
+            return jsonify({"mode": "NO_MATCH", "answer": "No relevant documents found.", "sources": []})
+
+        # --- 5. RE-RANKING (Cross-Encoder) ---
+        # Score every candidate against the original query
+        pairs = [[query, doc['text']] for doc in merged_list]
+        scores = CROSS_ENCODER.predict(pairs)
+
+        # Attach scores
+        for i, doc in enumerate(merged_list):
+            doc['score'] = float(scores[i])
         
-        top_chunks = [{"text": d, "metadata": m, "distance": dist} for d, m, dist in zip(docs, metas, dists)]
+        # Sort by Score (High to Low) and take Top 5
+        merged_list.sort(key=lambda x: x['score'], reverse=True)
+        top_chunks = merged_list[:5]
+
+        # Debugging: Print scores to see what's happening
+        print(f"\n--- Results for: {query} ---")
+        for i, c in enumerate(top_chunks):
+            print(f"{i+1}. [{c['origin']}] Score: {c['score']:.2f} | {c['text'][:40]}...")
+
     except Exception as e:
+        print(f"Search Error: {e}")
         return jsonify({"error": str(e)}), 500
 
-    # RAG Logic with Failure Detection
+    # --- 6. LLM GENERATION ---
     is_failure = False
-    # We lowered the threshold slightly to allow the LLM to see context and decide if it's ambiguous
-    if top_chunks and top_chunks[0]["distance"] < 0.55: 
-        # Pass history to the chat function
+    
+    # Cross-Encoder Score Threshold (approx > -4.0 implies relevance for this model)
+    if top_chunks and top_chunks[0]['score'] > -13.0:
         answer = gemini_chat_answer(query, top_chunks, history)
         sources = [c['metadata'] for c in top_chunks[:3]]
         mode = "RAG"
-        # Double check: sometimes Gemini itself says "I couldn't find..." even if distance is low
-        if "couldn't find relevant details" in answer.lower() or "cannot find that information" in answer.lower():
+        
+        if "NO_DATA" in answer:
             is_failure = True
+            answer = "Sorry, I am unable to find that information in the current documents. Kindly contact the college administration."
+            sources = []
     else:
         answer = "I couldn't find relevant details in the provided documents."
         sources = []
         mode = "NO_MATCH"
         is_failure = True
 
+    # --- 7. REPORTING (SQLite) ---
     if is_failure:
+        print(f"⚠️ FAILURE DETECTED: {query}")
         suggested_doc = guess_missing_document(query, history)
         report_id = str(uuid.uuid4())
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        
-        # Convert history to string for storage
         chat_context_str = "\n".join([f"{m.get('role')}: {m.get('text')}" for m in history[-3:]])
 
         try:
