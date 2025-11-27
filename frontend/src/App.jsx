@@ -86,6 +86,7 @@ function SourceCard({ s, backendUrl }) {
     label = "View PDF";
   }
 
+
   return (
     <div className="rounded-2xl border border-gray-200 p-4 bg-white shadow-sm hover:shadow-md transition-shadow">
       <div className="text-sm font-semibold text-gray-900 line-clamp-2">
@@ -119,6 +120,98 @@ function SourceCard({ s, backendUrl }) {
       ) : (
         <div className="mt-3 text-center text-xs text-gray-400 italic">
           No document link
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ReportsList({ backendUrl }) {
+  const [reports, setReports] = React.useState([]);
+  const [visible, setVisible] = React.useState(false);
+
+  // Fetch reports
+  const fetchReports = async () => {
+    try {
+      const res = await fetch(`${backendUrl}/admin/reports`);
+      const data = await res.json();
+      setReports(data);
+    } catch (e) {
+      console.error("Failed to fetch reports", e);
+    }
+  };
+
+  // Delete report
+  const handleDelete = async (id, e) => {
+    e.stopPropagation(); // Prevent toggling the list when clicking delete
+    if (!confirm("Are you sure you want to delete this report?")) return;
+
+    try {
+      await fetch(`${backendUrl}/admin/reports/${id}`, { method: "DELETE" });
+      // Remove from UI immediately
+      setReports(prev => prev.filter(r => r.id !== id));
+    } catch (error) {
+      alert("Failed to delete report");
+    }
+  };
+
+  return (
+    <div className="mt-6 border-t border-gray-100 pt-4">
+      <button 
+        onClick={() => {
+            if(!visible) fetchReports();
+            setVisible(!visible);
+        }}
+        className="flex items-center gap-2 text-sm font-medium text-gray-700 w-full hover:bg-gray-50 p-2 rounded-lg transition"
+      >
+        <div className="relative">
+             <span className="flex items-center justify-center w-5 h-5 rounded bg-red-100 text-red-600 text-[10px] font-bold">!</span>
+             {reports.length > 0 && !visible && (
+                 <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
+                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                   <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+                 </span>
+             )}
+        </div>
+        Missing Content Reports
+        <span className="ml-auto text-xs text-gray-400">{visible ? "Hide" : "Show"}</span>
+      </button>
+
+      {visible && (
+        <div className="mt-3 space-y-3 max-h-80 overflow-y-auto pr-1 scrollbar-thin">
+          {reports.length === 0 && <div className="text-xs text-gray-400 italic p-2">No failures reported yet.</div>}
+          
+          {reports.map((r) => (
+            <div key={r.id} className="group relative p-3 bg-red-50 rounded-xl border border-red-100 text-xs transition hover:shadow-sm hover:border-red-200">
+              
+              {/* Delete Button (Visible on Hover) */}
+              <button 
+                onClick={(e) => handleDelete(r.id, e)}
+                className="absolute top-2 right-2 p-1.5 rounded-full bg-white text-gray-400 hover:text-red-600 hover:bg-red-50 opacity-0 group-hover:opacity-100 transition shadow-sm"
+                title="Mark as Resolved (Delete)"
+              >
+                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+              </button>
+
+              <div className="font-semibold text-gray-800 mb-1 pr-6 flex items-center gap-1.5">
+                <svg className="w-3.5 h-3.5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Req: {r.suggested_document}
+              </div>
+              
+              <div className="text-gray-600 mb-2 leading-relaxed">
+                <span className="font-medium text-gray-500">Query:</span> "{r.failed_query}"
+              </div>
+              
+              <div className="flex justify-between items-center pt-2 border-t border-red-100/50 text-[10px] text-gray-400 uppercase tracking-wider">
+                <span className="bg-white px-1.5 py-0.5 rounded border border-red-100">{r.program}</span>
+                <span>{r.timestamp}</span>
+              </div>
+            </div>
+          ))}
         </div>
       )}
     </div>
@@ -452,6 +545,7 @@ export default function App() {
               Tip: For first run, upload at least one PDF per stream (B.Tech / B.Arch).
             </div>
           </div>
+          <ReportsList backendUrl={BACKEND_URL} />
         </aside>
       </main>
 

@@ -21,6 +21,8 @@ An intelligent, context-aware AI assistant designed to answer student queries re
   * LangChain (Orchestration)
   * ChromaDB (Vector Database)
   * Google Generative AI SDK
+  * pymupdf4llm for pdf to Markdown 
+
 
 **Frontend:**
 
@@ -184,7 +186,7 @@ Create a `.env` file in the `backend` folder:
 
 ```ini
 GOOGLE_API_KEY=your_actual_api_key_here
-GEMINI_CHAT_MODEL=gemini-1.5-flash-001
+GEMINI_CHAT_MODEL=gemini-2.5-flash-lite
 GEMINI_EMBED_MODEL=models/text-embedding-004
 CHROMA_DIR=./chroma
 DOCS_DIR=./docs
@@ -210,4 +212,3 @@ Update the **Backend URL** field in the header if your backend URL differs.
 - ChromaDB persists under `backend/chroma/` by default.
 - The UI preserves all **variable names** and request/response shapes used earlier.
 - Confidence gating switches between **RAG** and **GENERIC** modes; tweak threshold in `/ask` as needed.
-

@@ -3,7 +3,8 @@ import os
 import time
 import uuid
 import glob
-
+import sqlite3
+ 
 from typing import List, Dict, Any
 from datetime import datetime
 
@@ -61,7 +62,26 @@ def get_collection(program: str):
     return col
 
 # ------------ Utilities -------------
+DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "reports.db")
+def init_db():
+    """Initialize the SQLite database for reports."""
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS missing_reports (
+            id TEXT PRIMARY KEY,
+            timestamp TEXT,
+            program TEXT,
+            failed_query TEXT,
+            suggested_document TEXT,
+            chat_context TEXT
+        )
+    ''')
+    conn.commit()
+    conn.close()
 
+# Initialize DB on startup
+init_db()
 def embed_texts(texts: List[str], task_type="retrieval_document") -> List[List[float]]:
     if not texts:
         return []
@@ -150,18 +170,20 @@ def process_and_ingest(text, title, program, effective_from=None, source_url=Non
 # 1. Update this function to accept history
 def gemini_chat_answer(question: str, context_chunks: List[Dict[str, Any]], history: List[Dict[str, str]]) -> str:
     # Improved System Prompt
+   
     system_prompt = (
         "You are an intelligent Academic Ordinance Assistant.\n"
         "Your goal is to answer student questions based ONLY on the provided context.\n\n"
         "RULES:\n"
-        "1. If the user's question is ambiguous (e.g., 'how many semesters?' without specifying context), "
-        "DO NOT guess. Instead, ask a polite clarifying question (e.g., 'Do you mean per year or for the entire program?').\n"
-        "2. If the user answers a previous clarification (e.g., they just say 'Total'), combine it with the chat history "
-        "to understand they mean 'Total semesters in the program'.\n"
+        "1. If the user's question is ambiguous, ask a polite clarifying question.\n"
+        "2. If the user answers a previous clarification, combine it with chat history.\n"
         "3. Always cite the source title if you find the answer.\n"
-        "4. If the answer is not in the context, say 'Sorry, I am able find that information, Kindly contact the college administration.'"
-        "5. Be concise and clear with your answers. Make the answer more structured and pointwise wherever possible\n"
+        "4. If the answer is NOT in the context, output EXACTLY this phrase: 'NO_DATA: I could not find that information.'\n" 
+        "5. Be concise and clear with your answers.\n"
+        "6. Make the answer more structured and pointwise wherever possible\n"
     )
+    
+    # ... (rest of the function remains exactly the same)
     
     # Format Context
     lines = []
@@ -199,9 +221,41 @@ def gemini_chat_answer(question: str, context_chunks: List[Dict[str, Any]], hist
     except Exception as e:
         return f"Error from Gemini: {str(e)}"
 
-# ... (Previous code remains)
-
-# ... (Rest of code remains)
+def guess_missing_document(query: str, history: List[Dict[str, str]]) -> str:
+    """
+    Asks Gemini to analyze the failed query and history to suggest a missing document title.
+    """
+    system_prompt = (
+        "You are an expert Librarian. The user asked a question that could not be answered "
+        "by the current database. Your job is to analyze the query and chat history to "
+        "predict EXACTLY what kind of specific document is missing.\n"
+        "Return ONLY a short, specific document title (e.g., 'B.Tech Fee Structure 2025', "
+        "'Hostel Rules & Regulations', 'Academic Calendar'). Do not add any conversational text."
+    )
+    
+    # Format history for context
+    chat_context = ""
+    for msg in history[-3:]: # Look at last 3 messages
+        role = "Student" if msg.get("role") == "user" else "AI"
+        chat_context += f"{role}: {msg.get('text')}\n"
+    
+    user_prompt = (
+        f"CHAT HISTORY:\n{chat_context}\n"
+        f"FAILED QUERY: {query}\n\n"
+        "SUGGESTED DOCUMENT TITLE:"
+    )
+    
+    model = genai.GenerativeModel(
+        model_name=GEMINI_CHAT_MODEL,
+        system_instruction=system_prompt
+    )
+    
+    try:
+        resp = model.generate_content(user_prompt)
+        return resp.text.strip()
+    except Exception:
+        return "Unknown Document"
+    
 
 # ------------- Endpoints ----------------
 @app.route("/documents/<path:filename>", methods=["GET"])
@@ -392,17 +446,42 @@ def ask():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-    # RAG Logic
+    # RAG Logic with Failure Detection
+    is_failure = False
     # We lowered the threshold slightly to allow the LLM to see context and decide if it's ambiguous
     if top_chunks and top_chunks[0]["distance"] < 0.55: 
         # Pass history to the chat function
         answer = gemini_chat_answer(query, top_chunks, history)
         sources = [c['metadata'] for c in top_chunks[:3]]
         mode = "RAG"
+        # Double check: sometimes Gemini itself says "I couldn't find..." even if distance is low
+        if "couldn't find relevant details" in answer.lower() or "cannot find that information" in answer.lower():
+            is_failure = True
     else:
         answer = "I couldn't find relevant details in the provided documents."
         sources = []
         mode = "NO_MATCH"
+        is_failure = True
+
+    if is_failure:
+        suggested_doc = guess_missing_document(query, history)
+        report_id = str(uuid.uuid4())
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
+        # Convert history to string for storage
+        chat_context_str = "\n".join([f"{m.get('role')}: {m.get('text')}" for m in history[-3:]])
+
+        try:
+            conn = sqlite3.connect(DB_PATH)
+            c = conn.cursor()
+            c.execute('''
+                INSERT INTO missing_reports (id, timestamp, program, failed_query, suggested_document, chat_context)
+                VALUES (?, ?, ?, ?, ?, ?)
+            ''', (report_id, timestamp, program, query, suggested_doc, chat_context_str))
+            conn.commit()
+            conn.close()
+        except Exception as e:
+            print(f"Error saving report: {e}")
 
     return jsonify({
         "mode": mode, 
@@ -411,7 +490,35 @@ def ask():
         "latency_ms": int((time.time() - t0) * 1000)
     })
 
+@app.route("/admin/reports", methods=["GET"])
+def get_reports():
+    """Fetch all reports from SQLite."""
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        conn.row_factory = sqlite3.Row # Allows accessing columns by name
+        c = conn.cursor()
+        c.execute("SELECT * FROM missing_reports ORDER BY timestamp DESC")
+        rows = c.fetchall()
+        conn.close()
+        
+        # Convert to list of dicts
+        reports = [dict(row) for row in rows]
+        return jsonify(reports)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
+@app.route("/admin/reports/<report_id>", methods=["DELETE"])
+def delete_report(report_id):
+    """Delete a specific report."""
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        c = conn.cursor()
+        c.execute("DELETE FROM missing_reports WHERE id = ?", (report_id,))
+        conn.commit()
+        conn.close()
+        return jsonify({"ok": True})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 if __name__ == "__main__":
     # Startup log
     print(f"--- Server Starting ---")
