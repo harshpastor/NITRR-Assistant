@@ -1,125 +1,47 @@
+/**
+ * ============================================================================
+ * SECTION 1: IMPORTS & CONFIGURATION
+ * ============================================================================
+ */
 import React, { useEffect, useMemo, useRef, useState } from "react";
+
+// Markdown & Styling Libraries
 import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm"; // Ensure you run: npm install remark-gfm
+import remarkGfm from "remark-gfm";
+
+// PDF Rendering Libraries
 import { pdfjs, Document, Page } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
-// Configure the worker (Required for react-pdf to work in Vite)
+// Configure PDF.js worker (Required for Vite/Webpack environments to render PDFs)
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
+/**
+ * ============================================================================
+ * SECTION 2: UTILITY FUNCTIONS
+ * ============================================================================
+ */
+
+/**
+ * Utility to conditionally join class names.
+ * Filters out falsey values (null, undefined, false) to keep class strings clean.
+ * @param {...string} classes - List of class strings or conditions.
+ */
 function cx(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-// --- FEEDBACK LIST COMPONENT ---
-function FeedbackList({ backendUrl }) {
-  const [items, setItems] = useState([]);
-  const [visible, setVisible] = useState(false);
+/**
+ * ============================================================================
+ * SECTION 3: CUSTOM HOOKS
+ * ============================================================================
+ */
 
-  const fetchFeedback = async () => {
-    try {
-      const res = await fetch(`${backendUrl}/admin/feedback`);
-      const data = await res.json();
-      setItems(data);
-    } catch (e) {
-      console.error("Failed to fetch feedback", e);
-    }
-  };
-
-  const handleDelete = async (id, e) => {
-    e.stopPropagation();
-    if (!confirm("Delete this feedback alert?")) return;
-    try {
-      await fetch(`${backendUrl}/admin/feedback/${id}`, { method: "DELETE" });
-      setItems(prev => prev.filter(i => i.id !== id));
-    } catch (error) { alert("Failed"); }
-  };
-
-  return (
-    <div className="mt-4 border-t border-gray-100 pt-4">
-      <button 
-        onClick={() => { if(!visible) fetchFeedback(); setVisible(!visible); }}
-        className="flex items-center gap-2 text-sm font-medium text-gray-700 w-full hover:bg-gray-50 p-2 rounded-lg transition"
-      >
-        <div className="relative">
-             <span className="flex items-center justify-center w-5 h-5 rounded bg-amber-100 text-amber-600 text-[10px] font-bold">👎</span>
-             {items.length > 0 && !visible && (
-                 <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
-                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-                   <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>
-                 </span>
-             )}
-        </div>
-        Negative Feedback
-        <span className="ml-auto text-xs text-gray-400">{visible ? "Hide" : "Show"}</span>
-      </button>
-
-      {visible && (
-        <div className="mt-3 space-y-3 max-h-60 overflow-y-auto pr-1 scrollbar-thin">
-          {items.length === 0 && <div className="text-xs text-gray-400 italic p-2">No negative feedback.</div>}
-          {items.map((item) => (
-            <div key={item.id} className="group relative p-3 bg-amber-50 rounded-xl border border-amber-100 text-xs transition hover:shadow-sm">
-               <button 
-                onClick={(e) => handleDelete(item.id, e)}
-                className="absolute top-2 right-2 p-1.5 rounded-full bg-white text-gray-400 hover:text-red-600 hover:bg-red-50 opacity-0 group-hover:opacity-100 transition shadow-sm"
-              >
-                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-              </button>
-              <div className="font-medium text-gray-800 mb-1">Query: "{item.query}"</div>
-              <div className="text-gray-500 line-clamp-2 mb-2">Bot: {item.response.substring(0, 80)}...</div>
-              <div className="text-[10px] text-gray-400 uppercase">{item.timestamp}</div>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-// --- PDF MODAL COMPONENT ---
-function PdfModal({ url, pageNumber, onClose }) {
-  const [numPages, setNumPages] = useState(null);
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-      <div className="relative bg-white rounded-2xl w-full max-w-4xl h-[90vh] flex flex-col overflow-hidden shadow-2xl">
-        
-        {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 bg-gray-50">
-          <h3 className="text-sm font-semibold text-gray-700">Document Viewer (Page {pageNumber})</h3>
-          <button 
-            onClick={onClose} 
-            className="p-1.5 rounded-full hover:bg-gray-200 transition text-gray-500"
-          >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-
-        {/* PDF Area */}
-        <div className="flex-1 overflow-auto bg-gray-100 flex justify-center p-4">
-          <Document
-            file={url}
-            onLoadSuccess={({ numPages }) => setNumPages(numPages)}
-            className="shadow-lg"
-            loading={<div className="text-gray-500 text-sm">Loading PDF...</div>}
-          >
-            <Page 
-              pageNumber={Number(pageNumber) || 1} 
-              renderTextLayer={true} 
-              renderAnnotationLayer={true}
-              scale={1.2} 
-              className="rounded-lg overflow-hidden bg-white"
-            />
-          </Document>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// --- HOOKS ---
+/**
+ * Generates or retrieves a persistent Session ID from LocalStorage.
+ * This ID is used to track conversation history context on the backend.
+ */
 function useSessionId() {
   const [sid, setSid] = useState("");
   useEffect(() => {
@@ -130,6 +52,7 @@ function useSessionId() {
         return;
       }
     } catch {}
+    // Generate new ID if none exists
     const id = (crypto?.randomUUID?.() || `s_${Date.now()}_${Math.random().toString(36).slice(2,8)}`);
     setSid(id);
     try { window.localStorage.setItem("ordinance.sid", id); } catch {}
@@ -137,7 +60,47 @@ function useSessionId() {
   return sid;
 }
 
-// --- UI COMPONENTS ---
+/**
+ * ============================================================================
+ * SECTION 4: UI ATOM COMPONENTS (Small, Reusable)
+ * ============================================================================
+ */
+
+/**
+ * Displays the user or AI avatar icon with role-based styling.
+ */
+function Avatar({ role }) {
+  return (
+    <div className={cx(
+      "h-8 w-8 shrink-0 rounded-full flex items-center justify-center text-xs font-semibold shadow",
+      role === "user" ? "bg-blue-600 text-white" : "bg-gray-900 text-white"
+    )}>
+      {role === "user" ? "You" : "AI"}
+    </div>
+  );
+}
+
+/**
+ * Animated typing indicator dots displayed while the AI is generating a response.
+ */
+function TypingDots() {
+  return (
+    <div className="flex items-end gap-3">
+      <Avatar role="assistant" />
+      <div className="bg-gray-100 text-gray-900 rounded-2xl rounded-bl-md shadow-sm px-4 py-3">
+        <span className="inline-flex gap-1">
+          <span className="h-2 w-2 rounded-full bg-gray-500 animate-bounce [animation-delay:-0.2s]"></span>
+          <span className="h-2 w-2 rounded-full bg-gray-500 animate-bounce [animation-delay:-0.1s]"></span>
+          <span className="h-2 w-2 rounded-full bg-gray-500 animate-bounce"></span>
+        </span>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Toggle buttons to switch between different programs (B.Tech / B.Arch).
+ */
 function ProgramToggle({ value, onChange, disabled }) {
   return (
     <div className="inline-flex gap-2 rounded-2xl bg-gray-100 p-1">
@@ -160,17 +123,62 @@ function ProgramToggle({ value, onChange, disabled }) {
   );
 }
 
-function Avatar({ role }) {
+/**
+ * ============================================================================
+ * SECTION 5: FEATURE COMPONENTS (Complex Logic)
+ * ============================================================================
+ */
+
+/**
+ * Modal overlay to view a PDF document.
+ * Includes page navigation props and zoom scaling.
+ */
+function PdfModal({ url, pageNumber, onClose }) {
+  const [numPages, setNumPages] = useState(null);
+
   return (
-    <div className={cx(
-      "h-8 w-8 shrink-0 rounded-full flex items-center justify-center text-xs font-semibold shadow",
-      role === "user" ? "bg-blue-600 text-white" : "bg-gray-900 text-white"
-    )}>
-      {role === "user" ? "You" : "AI"}
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+      <div className="relative bg-white rounded-2xl w-full max-w-4xl h-[90vh] flex flex-col overflow-hidden shadow-2xl">
+        
+        {/* Modal Header */}
+        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 bg-gray-50">
+          <h3 className="text-sm font-semibold text-gray-700">Document Viewer (Page {pageNumber})</h3>
+          <button 
+            onClick={onClose} 
+            className="p-1.5 rounded-full hover:bg-gray-200 transition text-gray-500"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        {/* PDF Rendering Area */}
+        <div className="flex-1 overflow-auto bg-gray-100 flex justify-center p-4">
+          <Document
+            file={url}
+            onLoadSuccess={({ numPages }) => setNumPages(numPages)}
+            className="shadow-lg"
+            loading={<div className="text-gray-500 text-sm">Loading PDF...</div>}
+          >
+            <Page 
+              pageNumber={Number(pageNumber) || 1} 
+              renderTextLayer={true} 
+              renderAnnotationLayer={true}
+              scale={1.2} 
+              className="rounded-lg overflow-hidden bg-white"
+            />
+          </Document>
+        </div>
+      </div>
     </div>
   );
 }
 
+/**
+ * Displays a citation source.
+ * Handles logic to open either an external URL or the internal PDF Viewer modal.
+ */
 function SourceCard({ s, backendUrl, onView }) {
   const isLocal = s.filename && !s.source_url?.startsWith("http");
   let link = null;
@@ -223,6 +231,124 @@ function SourceCard({ s, backendUrl, onView }) {
   );
 }
 
+/**
+ * Chat message bubble.
+ * Handles Markdown rendering (with GFM tables) and AI Feedback buttons (up/down vote).
+ */
+function MessageBubble({ role, text, relatedQuery, program, backendUrl }) {
+  const isUser = role === "user";
+  const [vote, setVote] = useState(null); // 'up' | 'down' | null
+
+  const handleVote = async (rating) => {
+    if (vote) return; // Prevent double voting
+    setVote(rating);
+
+    try {
+      await fetch(`${backendUrl}/feedback`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          program: program,
+          query: relatedQuery,
+          response: text,
+          rating: rating
+        })
+      });
+    } catch (e) {
+      console.error("Feedback failed", e);
+    }
+  };
+  
+  return (
+    <div className={cx("flex items-end gap-3", isUser ? "justify-end" : "justify-start")}>
+      {!isUser && <Avatar role={role} />}
+      <div className={cx(
+        "max-w-[85%] rounded-2xl px-5 py-3 text-sm leading-relaxed shadow-sm overflow-hidden group relative",
+        isUser ? "bg-blue-600 text-white rounded-br-md" : "bg-gray-100 text-gray-900 rounded-bl-md"
+      )}>
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
+          components={{
+            ul: ({node, ...props}) => <ul className="list-disc pl-4 mb-2 space-y-1" {...props} />,
+            ol: ({node, ...props}) => <ol className="list-decimal pl-4 mb-2 space-y-1" {...props} />,
+            li: ({node, ...props}) => <li className="pl-1" {...props} />,
+            p: ({node, ...props}) => <p className="mb-2 last:mb-0" {...props} />,
+            strong: ({node, ...props}) => <span className="font-bold" {...props} />,
+            a: ({node, ...props}) => (
+              <a 
+                {...props} 
+                target="_blank" 
+                rel="noreferrer" 
+                className={`underline ${isUser ? 'text-white' : 'text-blue-600 hover:text-blue-800'}`} 
+              />
+            ),
+            // Custom Table Styling for GFM
+            table: ({node, ...props}) => (
+              <div className="overflow-x-auto my-4 rounded-lg border border-gray-200">
+                <table className="min-w-full divide-y divide-gray-200 bg-white text-sm" {...props} />
+              </div>
+            ),
+            thead: ({node, ...props}) => <thead className="bg-gray-50" {...props} />,
+            tbody: ({node, ...props}) => <tbody className="divide-y divide-gray-200 bg-white" {...props} />,
+            tr: ({node, ...props}) => <tr className="" {...props} />,
+            th: ({node, ...props}) => (
+              <th className="px-3 py-3.5 text-left text-xs font-semibold text-gray-900 uppercase tracking-wider" {...props} />
+            ),
+            td: ({node, ...props}) => (
+              <td className="whitespace-normal px-3 py-4 text-gray-700" {...props} />
+            ),
+          }}
+        >
+          {text}
+        </ReactMarkdown>
+
+        {/* Feedback Buttons (Only for AI responses) */}
+        {!isUser && (
+          <div className="mt-2 pt-2 border-t border-gray-200/50 flex gap-3 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
+            <button 
+              onClick={() => handleVote("up")}
+              disabled={vote !== null}
+              className={cx(
+                "flex items-center gap-1 text-xs transition",
+                vote === "up" ? "text-green-600 font-medium" : "text-gray-400 hover:text-green-600"
+              )}
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
+              </svg>
+              {vote === "up" ? "Helpful" : ""}
+            </button>
+            <button 
+               onClick={() => handleVote("down")}
+               disabled={vote !== null}
+               className={cx(
+                 "flex items-center gap-1 text-xs transition",
+                 vote === "down" ? "text-amber-600 font-medium" : "text-gray-400 hover:text-amber-600"
+               )}
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14H5.236a2 2 0 01-1.789-2.894l3.5-7A2 2 0 018.736 3h4.018a2 2 0 01.485.06l2.94 1.108V11a2 2 0 01-2 2h-2.5m-4 9V20m0 0h2m-2 0H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5M20 7v6a2 2 0 01-2 2h-2.5" />
+              </svg>
+              {vote === "down" ? "Not Helpful" : ""}
+            </button>
+          </div>
+        )}
+      </div>
+      {isUser && <Avatar role={role} />}
+    </div>
+  );
+}
+
+/**
+ * ============================================================================
+ * SECTION 6: ADMIN & DASHBOARD COMPONENTS
+ * ============================================================================
+ */
+
+/**
+ * Admin view to list reported missing content failures.
+ * Allows deleting reports after resolution.
+ */
 function ReportsList({ backendUrl }) {
   const [reports, setReports] = useState([]);
   const [visible, setVisible] = useState(false);
@@ -308,99 +434,81 @@ function ReportsList({ backendUrl }) {
   );
 }
 
-// Update function signature to accept new props
-function MessageBubble({ role, text, relatedQuery, program, backendUrl }) {
-  const isUser = role === "user";
-  const [vote, setVote] = useState(null); // 'up' | 'down' | null
+/**
+ * Admin view to list negative user feedback.
+ * Allows deleting/acknowledging feedback.
+ */
+function FeedbackList({ backendUrl }) {
+  const [items, setItems] = useState([]);
+  const [visible, setVisible] = useState(false);
 
-  const handleVote = async (rating) => {
-    if (vote) return; // Prevent double voting
-    setVote(rating);
-
+  const fetchFeedback = async () => {
     try {
-      await fetch(`${backendUrl}/feedback`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          program: program,
-          query: relatedQuery,
-          response: text,
-          rating: rating
-        })
-      });
+      const res = await fetch(`${backendUrl}/admin/feedback`);
+      const data = await res.json();
+      setItems(data);
     } catch (e) {
-      console.error("Feedback failed", e);
+      console.error("Failed to fetch feedback", e);
     }
   };
-  
-  return (
-    <div className={cx("flex items-end gap-3", isUser ? "justify-end" : "justify-start")}>
-      {!isUser && <Avatar role={role} />}
-      <div className={cx(
-        "max-w-[85%] rounded-2xl px-5 py-3 text-sm leading-relaxed shadow-sm overflow-hidden group relative",
-        isUser ? "bg-blue-600 text-white rounded-br-md" : "bg-gray-100 text-gray-900 rounded-bl-md"
-      )}>
-        <ReactMarkdown
-          remarkPlugins={[remarkGfm]}
-          components={{ /* ... (Keep your existing table/style components) ... */ }}
-        >
-          {text}
-        </ReactMarkdown>
 
-        {/* FEEDBACK BUTTONS (Only for AI) */}
-        {!isUser && (
-          <div className="mt-2 pt-2 border-t border-gray-200/50 flex gap-3 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
-            <button 
-              onClick={() => handleVote("up")}
-              disabled={vote !== null}
-              className={cx(
-                "flex items-center gap-1 text-xs transition",
-                vote === "up" ? "text-green-600 font-medium" : "text-gray-400 hover:text-green-600"
-              )}
-            >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
-              </svg>
-              {vote === "up" ? "Helpful" : ""}
-            </button>
-            <button 
-               onClick={() => handleVote("down")}
-               disabled={vote !== null}
-               className={cx(
-                 "flex items-center gap-1 text-xs transition",
-                 vote === "down" ? "text-amber-600 font-medium" : "text-gray-400 hover:text-amber-600"
-               )}
-            >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14H5.236a2 2 0 01-1.789-2.894l3.5-7A2 2 0 018.736 3h4.018a2 2 0 01.485.06l2.94 1.108V11a2 2 0 01-2 2h-2.5m-4 9V20m0 0h2m-2 0H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5M20 7v6a2 2 0 01-2 2h-2.5" />
-              </svg>
-              {vote === "down" ? "Not Helpful" : ""}
-            </button>
-          </div>
-        )}
-      </div>
-      {isUser && <Avatar role={role} />}
+  const handleDelete = async (id, e) => {
+    e.stopPropagation();
+    if (!confirm("Delete this feedback alert?")) return;
+    try {
+      await fetch(`${backendUrl}/admin/feedback/${id}`, { method: "DELETE" });
+      setItems(prev => prev.filter(i => i.id !== id));
+    } catch (error) { alert("Failed"); }
+  };
+
+  return (
+    <div className="mt-4 border-t border-gray-100 pt-4">
+      <button 
+        onClick={() => { if(!visible) fetchFeedback(); setVisible(!visible); }}
+        className="flex items-center gap-2 text-sm font-medium text-gray-700 w-full hover:bg-gray-50 p-2 rounded-lg transition"
+      >
+        <div className="relative">
+             <span className="flex items-center justify-center w-5 h-5 rounded bg-amber-100 text-amber-600 text-[10px] font-bold">👎</span>
+             {items.length > 0 && !visible && (
+                 <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
+                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                   <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>
+                 </span>
+             )}
+        </div>
+        Negative Feedback
+        <span className="ml-auto text-xs text-gray-400">{visible ? "Hide" : "Show"}</span>
+      </button>
+
+      {visible && (
+        <div className="mt-3 space-y-3 max-h-60 overflow-y-auto pr-1 scrollbar-thin">
+          {items.length === 0 && <div className="text-xs text-gray-400 italic p-2">No negative feedback.</div>}
+          {items.map((item) => (
+            <div key={item.id} className="group relative p-3 bg-amber-50 rounded-xl border border-amber-100 text-xs transition hover:shadow-sm">
+               <button 
+                onClick={(e) => handleDelete(item.id, e)}
+                className="absolute top-2 right-2 p-1.5 rounded-full bg-white text-gray-400 hover:text-red-600 hover:bg-red-50 opacity-0 group-hover:opacity-100 transition shadow-sm"
+              >
+                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+              <div className="font-medium text-gray-800 mb-1">Query: "{item.query}"</div>
+              <div className="text-gray-500 line-clamp-2 mb-2">Bot: {item.response.substring(0, 80)}...</div>
+              <div className="text-[10px] text-gray-400 uppercase">{item.timestamp}</div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
 
-function TypingDots() {
-  return (
-    <div className="flex items-end gap-3">
-      <Avatar role="assistant" />
-      <div className="bg-gray-100 text-gray-900 rounded-2xl rounded-bl-md shadow-sm px-4 py-3">
-        <span className="inline-flex gap-1">
-          <span className="h-2 w-2 rounded-full bg-gray-500 animate-bounce [animation-delay:-0.2s]"></span>
-          <span className="h-2 w-2 rounded-full bg-gray-500 animate-bounce [animation-delay:-0.1s]"></span>
-          <span className="h-2 w-2 rounded-full bg-gray-500 animate-bounce"></span>
-        </span>
-      </div>
-    </div>
-  );
-}
-
-// --- MAIN APP COMPONENT ---
+/**
+ * ============================================================================
+ * SECTION 7: MAIN APPLICATION COMPONENT
+ * ============================================================================
+ */
 export default function App() {
+  // --- STATE MANAGEMENT ---
   const sessionId = useSessionId();
   const [BACKEND_URL, setBackendUrl] = useState("http://localhost:8080");
   const [program, setProgram] = useState(null);
@@ -411,26 +519,41 @@ export default function App() {
   const [lastLatency, setLastLatency] = useState(null);
   const [mode, setMode] = useState(null); 
   
-  // State for PDF Viewer Modal
+  // PDF Viewer Modal State
   const [viewPdf, setViewPdf] = useState(null); // { url: string, page: number }
 
-  // Ingestion State
+  // Ingestion Form State
   const [ingFile, setIngFile] = useState(null);
   const [ingTitle, setIngTitle] = useState("");
   const [ingEff, setIngEff] = useState("");
   const [ingUrl, setIngUrl] = useState("");
   const [ingStatus, setIngStatus] = useState("");
 
+  // Refs & Memoization
   const fileInputRef = useRef(null);
   const canAsk = useMemo(() => !!query.trim() && !!sessionId, [query, sessionId]);
   const chatScrollRef = useRef(null);
 
+  // Suggestions List
+  const suggestions = [
+    "What is the attendance requirement?",
+    "Is a 6-month internship allowed in 8th semester?",
+    "How is grades calculated?",
+    "How long is the course?"
+  ];
+
+  // --- EFFECTS ---
+
+  // Auto-scroll chat to bottom when new messages arrive
   useEffect(() => {
     const el = chatScrollRef.current;
     if (!el) return;
     el.scrollTop = el.scrollHeight;
   }, [messages, loading]);
 
+  // --- EVENT HANDLERS ---
+
+  // Handle User Question Submission
   async function handleAsk() {
     if (!canAsk) return;
     if (!program) {
@@ -474,6 +597,7 @@ export default function App() {
     }
   }
 
+  // Handle PDF Ingestion Upload
   async function handleIngest() {
     if (!ingFile) { 
         setIngStatus("Choose a PDF first."); 
@@ -490,7 +614,7 @@ export default function App() {
     const fd = new FormData();
     fd.append("file", ingFile);
     fd.append("program", program);
-    fd.append("title", ingTitle || ingFile.name);
+    fd.append("title", ingTitle || ingFile.name); // Use file name as fallback title
     fd.append("effective_from", effectiveFrom);
     fd.append("source_url", sourceUrl);
 
@@ -511,13 +635,7 @@ export default function App() {
     }
   }
 
-  const suggestions = [
-    "What is the attendance requirement?",
-    "Is a 6-month internship allowed in 8th semester?",
-    "How is grades calculated?",
-    "How long is the course?"
-  ];
-
+  // Handle Pre-set Suggestions
   function handleSuggestionClick(s) {
     setQuery(s);
     setTimeout(() => {
@@ -525,6 +643,7 @@ export default function App() {
     }, 0);
   }
 
+  // --- RENDER ---
   return (
     <div className="min-h-screen bg-[radial-gradient(ellipse_at_top,rgba(59,130,246,0.08),transparent_50%),linear-gradient(to_bottom,#ffffff,#f8fafc)] text-gray-900">
       
@@ -537,6 +656,7 @@ export default function App() {
         />
       )}
 
+      {/* Header Bar */}
       <header className="sticky top-0 z-10 backdrop-blur supports-[backdrop-filter]:bg-white/70 bg-white/60 border-b border-gray-200">
         <div className="mx-auto max-w-6xl px-4 py-3 flex items-center gap-4">
           <div className="flex items-center gap-3">
@@ -564,13 +684,16 @@ export default function App() {
         </div>
       </header>
 
+      {/* Main Content Area */}
       <main className="mx-auto max-w-6xl px-4 py-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Chat Panel */}
+        
+        {/* Chat Interface Column */}
         <section className="lg:col-span-2 rounded-3xl border border-gray-200 bg-white shadow-sm p-0 flex flex-col min-h-[72vh]">
           <div className="px-5 pt-4 pb-2 text-xs text-gray-600 border-b border-gray-100">
             Session: <span className="font-mono">{sessionId || "(generating…)"}</span>
           </div>
 
+          {/* Messages Area */}
           <div
             ref={chatScrollRef}
             className="flex-1 overflow-y-auto px-5 py-4 space-y-4 scroll-smooth"
@@ -596,7 +719,6 @@ export default function App() {
                 key={i} 
                 role={m.role} 
                 text={m.text}
-                // Pass the previous message as the user query (if this is AI)
                 relatedQuery={m.role === "assistant" && i > 0 ? messages[i-1].text : ""}
                 program={program}
                 backendUrl={BACKEND_URL}
@@ -605,6 +727,7 @@ export default function App() {
             {loading && <TypingDots />}
           </div>
 
+          {/* Input Area */}
           <div className="px-5 pt-2 pb-4 border-t border-gray-100">
             <div className="flex items-center gap-2">
               <input
@@ -624,7 +747,7 @@ export default function App() {
               >{loading ? "Asking…" : "Send"}</button>
             </div>
 
-            {/* ANSWER SOURCES */}
+            {/* Answer Sources Display */}
             {answerSources.length > 0 && (
               <div className="mt-4">
                 <div className="text-sm font-semibold mb-2 flex items-center gap-2">
@@ -651,7 +774,7 @@ export default function App() {
           </div>
         </section>
 
-        {/* Ingestion Panel */}
+        {/* Sidebar / Ingestion Column */}
         <aside className="rounded-3xl border border-gray-200 bg-white shadow-sm p-4">
           <div className="text-base font-semibold mb-1">Ingest Ordinance / Notices</div>
           <div className="text-xs text-gray-600 mb-3">Upload a PDF into the selected stream’s index. Add metadata to improve citations.</div>
@@ -678,11 +801,14 @@ export default function App() {
               Tip: For first run, upload at least one PDF per stream (B.Tech / B.Arch).
             </div>
           </div>
+          
+          {/* Admin Lists */}
           <ReportsList backendUrl={BACKEND_URL} />
           <FeedbackList backendUrl={BACKEND_URL} />
         </aside>
       </main>
 
+      {/* Footer */}
       <footer className="mx-auto max-w-6xl px-4 py-6 text-xs text-gray-500">
         © {new Date().getFullYear()} Ordinance Assistant
       </footer>
